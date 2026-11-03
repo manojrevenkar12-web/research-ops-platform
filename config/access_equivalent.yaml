@@ -10,5 +10,5 @@ equivalent:
       old row and the CHECK repeats the USING.
   "salary_costs.update[1].check[1]:drop":
     reason: >
-      The entity of a salary record is fixed when it is created (salary_costs_entity trigger keeps OLD.entity
-      on update), so a row that passed the USING's same-entity test still passes it as the new row.
+      The entity of a salary record is fixed when it is created (the salary_costs_entity trigger refuses any
+      change to it), so a row that passed the USING's same-entity test still passes it as the new row.

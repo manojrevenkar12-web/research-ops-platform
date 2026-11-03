@@ -1,0 +1,8 @@
+node_modules
+**/node_modules
+dist
+reports
+.local
+apps/web/test-results
+apps/web/playwright-report
+infra/.terraform

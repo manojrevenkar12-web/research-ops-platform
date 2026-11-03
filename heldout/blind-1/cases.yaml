@@ -1,0 +1,3065 @@
+# Held-out set blind-1: written from docs/GRANT_RULES.md, config/grants.yaml, docs/ACCESS.md,
+# config/access.yaml and docs/FIXTURE.md only. Every money figure was computed by hand; the arithmetic
+# is in the comment next to it. "R(x)" means x rounded to cents, half up.
+#
+# Grants used unless a case says otherwise:
+#   EU grant: eu_daily, DE, funding 0.7, indirect 0.25
+#   DE grant: de_hourly, DE, funding 0.5, indirect 0.2
+
+cost_cases:
+
+  # ---------------------------------------------------------------- eu_daily basics and rounding
+
+  - name: EU daily - two entries, rate is annual/215 and hours/8 are days
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 64500, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 6, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 7.5, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "506.25"        # rate 64500/215 = 300/day; 13.5h/8 = 1.6875 d; 1.6875*300 = 506.25
+      indirect_eur: "126.56"      # 506.25*0.25 = 126.5625 -> 126.56
+      funded_eur: "442.97"        # (506.25+126.56)*0.7 = 632.81*0.7 = 442.967 -> 442.97
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "13.50", direct_eur: "506.25", other_entity_hours: "0.00", late_hours: "0.00", over_cap_hours: "0.00" }
+
+  - name: EU daily - the daily rate is not rounded before multiplying
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 70000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-04-01, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-02, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-03, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-04, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-05, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-06, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-07, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-08, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-09, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-10, hours: 8, status: approved, late: false }
+    period: 2026-04
+    expect:
+      direct_eur: "3255.81"       # 80h = 10 d; 10*70000/215 = 3255.8139... -> 3255.81 (rounding the rate first, 325.58*10, gives 3255.80)
+      indirect_eur: "813.95"      # 3255.81*0.25 = 813.9525 -> 813.95
+      funded_eur: "2848.83"       # (3255.81+813.95)*0.7 = 4069.76*0.7 = 2848.832 -> 2848.83
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "80.00", direct_eur: "3255.81" }
+
+  - name: EU daily - quarter hours convert to fractional days
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 7.25, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "362.50"        # rate 86000/215 = 400/day; 7.25/8 = 0.90625 d; *400 = 362.50
+      indirect_eur: "90.63"       # 362.50*0.25 = 90.625 -> 90.63
+      funded_eur: "317.19"        # (362.50+90.63)*0.7 = 453.13*0.7 = 317.191 -> 317.19
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "7.25", direct_eur: "362.50" }
+
+  - name: EU daily - a person's cost rounds half up at the cent (28.125 to 28.13)
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 64500, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 0.75, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "28.13"         # 0.75/8 = 0.09375 d * 300 = 28.125 -> 28.13 (half-even would give 28.12)
+      indirect_eur: "7.03"        # 28.13*0.25 = 7.0325 -> 7.03
+      funded_eur: "24.61"         # (28.13+7.03)*0.7 = 35.16*0.7 = 24.612 -> 24.61
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "0.75", direct_eur: "28.13" }
+
+  - name: EU daily - indirect rounds half up (103.125 to 103.13)
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8.25, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "412.50"        # 8.25/8 = 1.03125 d * 400 = 412.50
+      indirect_eur: "103.13"      # 412.50*0.25 = 103.125 -> 103.13 (half-even would give 103.12)
+      funded_eur: "360.94"        # (412.50+103.13)*0.7 = 515.63*0.7 = 360.941 -> 360.94
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: EU daily - funded rounds half up (65.625 to 65.63)
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 1.5, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "75.00"         # 1.5/8 = 0.1875 d * 400 = 75.00
+      indirect_eur: "18.75"       # 75.00*0.25 = 18.75
+      funded_eur: "65.63"         # (75.00+18.75)*0.7 = 93.75*0.7 = 65.625 -> 65.63 (half-even or binary float gives 65.62)
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: direct is the sum of per-person costs, each already rounded
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE, bob: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 64500, contract_hours: 1720, managing_director: false }
+      - { person: bob, year: 2026, annual_cost_eur: 64500, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 0.75, status: approved, late: false }
+      - { person: bob, grant: this, date: 2026-03-10, hours: 0.75, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "56.26"         # each 0.09375 d * 300 = 28.125 -> 28.13; 28.13+28.13 = 56.26 (rounding the sum would give 56.25)
+      indirect_eur: "14.07"       # 56.26*0.25 = 14.065 -> 14.07
+      funded_eur: "49.23"         # (56.26+14.07)*0.7 = 70.33*0.7 = 49.231 -> 49.23
+      ineligible_hours: "0.00"
+      contributors: 2
+      lines:
+        anna: { eligible_hours: "0.75", direct_eur: "28.13" }
+        bob: { eligible_hours: "0.75", direct_eur: "28.13" }
+
+  # ---------------------------------------------------------------- year to date, January, year boundary
+
+  - name: indirect and funded are computed year to date and then differenced
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-01-15, hours: 0.25, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-16, hours: 0.25, status: approved, late: false }
+    period: 2026-02
+    expect:
+      # YTD Jan: direct 0.25/8*400 = 12.50; indirect 3.125 -> 3.13; funded (12.50+3.13)*0.7 = 15.63*0.7 = 10.941 -> 10.94
+      # YTD Feb: direct 25.00; indirect 6.25; funded (25.00+6.25)*0.7 = 31.25*0.7 = 21.875 -> 21.88
+      direct_eur: "12.50"         # 25.00 - 12.50
+      indirect_eur: "3.12"        # 6.25 - 3.13 (computing the month alone would give 3.13)
+      funded_eur: "10.94"         # 21.88 - 10.94
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "0.25", direct_eur: "12.50" }
+
+  - name: January has no previous month and ignores December of the previous year
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2025, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: anna, year: 2026, annual_cost_eur: 107500, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2025-12-15, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-12, hours: 8, status: approved, late: false }
+    period: 2026-01
+    expect:
+      direct_eur: "500.00"        # YTD Jan 2026 only: 1 d * 107500/215 (= 500) = 500.00; nothing subtracted
+      indirect_eur: "125.00"      # 500.00*0.25
+      funded_eur: "437.50"        # (500.00+125.00)*0.7 = 437.50
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "8.00", direct_eur: "500.00" }
+
+  - name: December uses that year's personnel cost and its own year to date
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2025, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: anna, year: 2026, annual_cost_eur: 107500, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2025-12-15, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-12, hours: 8, status: approved, late: false }
+    period: 2025-12
+    expect:
+      direct_eur: "400.00"        # YTD Dec 2025 = 1 d * 86000/215 (= 400) = 400.00; YTD Nov 2025 = 0
+      indirect_eur: "100.00"      # 400.00*0.25
+      funded_eur: "350.00"        # 500.00*0.7
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  # ---------------------------------------------------------------- who and what counts
+
+  - name: late approved entries are shown but not charged
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 4, status: approved, late: true }
+    period: 2026-03
+    expect:
+      direct_eur: "400.00"        # only the 8h on time: 1 d * 400
+      indirect_eur: "100.00"      # 400*0.25
+      funded_eur: "350.00"        # 500*0.7
+      ineligible_hours: "4.00"    # late 4 + over-cap 0 + other-entity 0
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "8.00", direct_eur: "400.00", late_hours: "4.00", other_entity_hours: "0.00", over_cap_hours: "0.00" }
+
+  - name: draft, submitted and returned hours do not count, and need no personnel cost record
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE, dora: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 2, status: draft, late: false }
+      - { person: anna, grant: this, date: 2026-03-12, hours: 3, status: submitted, late: false }
+      - { person: anna, grant: this, date: 2026-03-13, hours: 1, status: returned, late: false }
+      - { person: dora, grant: this, date: 2026-03-10, hours: 8, status: submitted, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "400.00"        # only anna's 8h approved: 1 d * 400; dora has no approved hours, so no record needed
+      indirect_eur: "100.00"
+      funded_eur: "350.00"
+      ineligible_hours: "0.00"    # unapproved hours are not "ineligible", they simply do not count
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "8.00", direct_eur: "400.00" }
+
+  - name: employees of another entity are listed as other-entity hours, not charged, no record needed
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE, bob: US, carl: US }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: bob, year: 2026, annual_cost_eur: 104000, contract_hours: 2080, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: bob, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: carl, grant: this, date: 2026-03-11, hours: 6, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "400.00"        # anna only: 1 d * 400
+      indirect_eur: "100.00"
+      funded_eur: "350.00"
+      ineligible_hours: "14.00"   # other-entity 8 (bob) + 6 (carl)
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "8.00", direct_eur: "400.00", other_entity_hours: "0.00" }
+        bob: { eligible_hours: "0.00", direct_eur: "0.00", other_entity_hours: "8.00" }
+        carl: { eligible_hours: "0.00", direct_eur: "0.00", other_entity_hours: "6.00" }
+
+  - name: contributors counts only people with eligible hours in the month
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE, bob: DE, carl: DE, dora: DE, erik: US, fay: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: bob, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: carl, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+      - { person: dora, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-05-12, hours: 8, status: approved, late: false }
+      - { person: bob, grant: this, date: 2026-05-12, hours: 4, status: approved, late: false }
+      - { person: carl, grant: this, date: 2026-05-13, hours: 2, status: approved, late: false }
+      - { person: dora, grant: this, date: 2026-05-13, hours: 5, status: approved, late: true }
+      - { person: erik, grant: this, date: 2026-05-14, hours: 3, status: approved, late: false }
+      - { person: fay, grant: this, date: 2026-05-14, hours: 6, status: draft, late: false }
+    period: 2026-05
+    expect:
+      direct_eur: "700.00"        # 50 EUR/h: anna 8h 400.00 + bob 4h 200.00 + carl 2h 100.00
+      indirect_eur: "175.00"      # 700*0.25
+      funded_eur: "612.50"        # 875*0.7
+      ineligible_hours: "8.00"    # late 5 (dora) + other-entity 3 (erik)
+      contributors: 3             # anna, bob, carl; not dora (late only), erik (other entity), fay (draft)
+      lines:
+        dora: { eligible_hours: "0.00", late_hours: "5.00", direct_eur: "0.00" }
+        erik: { eligible_hours: "0.00", other_entity_hours: "3.00", direct_eur: "0.00" }
+
+  # ---------------------------------------------------------------- missing personnel cost record
+
+  - name: refuses when someone with approved hours has no personnel cost record (EU)
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries: []
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect_error: missing_personnel_cost
+
+  - name: refuses when the only personnel cost record is for another year
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2025, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect_error: missing_personnel_cost
+
+  - name: refuses when someone with approved hours has no personnel cost record (DE hourly)
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE, bob: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 60000, contract_hours: 1600, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: bob, grant: this, date: 2026-03-10, hours: 2, status: approved, late: false }
+    period: 2026-03
+    expect_error: missing_personnel_cost
+
+  - name: refuses when someone's approved hours earlier in the year have no record
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE, bob: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: bob, grant: this, date: 2026-01-20, hours: 4, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-10, hours: 8, status: approved, late: false }
+    period: 2026-02
+    # February is the YTD figure at the end of February minus the end of January; both need bob's cost.
+    expect_error: missing_personnel_cost
+
+  - name: no refusal when the person without a record has approved hours only on another grant
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    other_grants:
+      - { id: g2, method: de_hourly, entity: DE }
+    people: { anna: DE, bob: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: bob, grant: g2, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "400.00"        # anna 1 d * 400
+      indirect_eur: "100.00"
+      funded_eur: "350.00"
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  # ---------------------------------------------------------------- de_hourly
+
+  - name: DE hourly - contract hours are used when actual hours are fewer
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 60000, contract_hours: 1600, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 6, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 4, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "375.00"        # actual 10 < contract 1600; rate 60000/1600 = 37.50; 10*37.50 = 375.00
+      indirect_eur: "75.00"       # 375*0.2
+      funded_eur: "225.00"        # (375+75)*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "10.00", direct_eur: "375.00" }
+
+  - name: DE hourly - actual hours above contract lower the rate
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 5000, contract_hours: 100, managing_director: false }
+    entries:
+      - { person: anna, grant: null, date: 2026-01-05, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-06, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-07, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-08, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-09, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-10, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-11, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-12, hours: 10, status: draft, late: false }
+      - { person: anna, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-05, hours: 10, status: approved, late: false }
+    period: 2026-02
+    expect:
+      # YTD Jan: no grant hours -> 0. YTD Feb: actual 80+40 = 120 > 100; rate 5000/120 = 41.666...
+      direct_eur: "1666.67"       # 40*5000/120 = 1666.666... -> 1666.67 (rounding the rate first, 41.67*40, gives 1666.80)
+      indirect_eur: "333.33"      # 1666.67*0.2 = 333.334 -> 333.33
+      funded_eur: "1000.00"       # (1666.67+333.33)*0.5 = 2000.00*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "40.00", direct_eur: "1666.67" }
+
+  - name: DE hourly - actual hours include draft, submitted, late, other-grant and no-grant hours but not returned
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    other_grants:
+      - { id: g2, method: de_hourly, entity: DE }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 5000, contract_hours: 75, managing_director: false }
+    entries:
+      - { person: anna, grant: null, date: 2026-01-05, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-06, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-01-07, hours: 10, status: draft, late: false }
+      - { person: anna, grant: g2, date: 2026-01-08, hours: 10, status: submitted, late: false }
+      - { person: anna, grant: g2, date: 2026-01-09, hours: 10, status: submitted, late: false }
+      - { person: anna, grant: null, date: 2026-01-12, hours: 10, status: returned, late: false }
+      - { person: anna, grant: null, date: 2026-01-13, hours: 10, status: returned, late: false }
+      - { person: anna, grant: null, date: 2026-01-14, hours: 10, status: returned, late: false }
+      - { person: anna, grant: null, date: 2026-01-15, hours: 10, status: returned, late: false }
+      - { person: anna, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-04, hours: 10, status: approved, late: true }
+    period: 2026-02
+    expect:
+      # actual YTD Feb = draft 30 + submitted 20 + approved 20 + late 10 = 80 (returned 40 excluded) > contract 75
+      # rate 5000/80 = 62.50. (Without the late hours: 70 -> 66.67; with returned: 120 -> 41.67.)
+      direct_eur: "1250.00"       # 20 eligible h * 62.50
+      indirect_eur: "250.00"      # 1250*0.2
+      funded_eur: "750.00"        # 1500*0.5
+      ineligible_hours: "10.00"   # late 10
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "20.00", direct_eur: "1250.00", late_hours: "10.00" }
+
+  - name: DE hourly - a month with no grant hours can carry a negative adjustment
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: null, date: 2026-02-02, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-03, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-04, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-05, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-06, hours: 9, status: draft, late: false }
+    period: 2026-02
+    expect:
+      # YTD Jan: actual 30 < 60, rate 3000/60 = 50; 30*50 = 1500.00; indirect 300.00; funded (1800)*0.5 = 900.00
+      # YTD Feb: actual 30+45 = 75 > 60, rate 3000/75 = 40; 30*40 = 1200.00; indirect 240.00; funded 1440*0.5 = 720.00
+      direct_eur: "-300.00"       # 1200.00 - 1500.00
+      indirect_eur: "-60.00"      # 240.00 - 300.00
+      funded_eur: "-180.00"       # 720.00 - 900.00
+      ineligible_hours: "0.00"
+      contributors: 0             # no eligible hours in February
+      lines:
+        anna: { eligible_hours: "0.00", direct_eur: "-300.00" }
+
+  - name: DE hourly - the same data in January has no previous month
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: null, date: 2026-02-02, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-03, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-04, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-05, hours: 9, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-06, hours: 9, status: draft, late: false }
+    period: 2026-01
+    expect:
+      direct_eur: "1500.00"       # actual to end of Jan = 30 < 60; 30*3000/60 = 1500.00 (February hours not counted)
+      indirect_eur: "300.00"      # 1500*0.2
+      funded_eur: "900.00"        # 1800*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "30.00", direct_eur: "1500.00" }
+
+  - name: DE hourly - a rate drop re-prices earlier months in the month it happens
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: null, date: 2026-02-04, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-05, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-02-06, hours: 5, status: draft, late: false }
+    period: 2026-02
+    expect:
+      # YTD Jan: 30h * 50 = 1500.00; indirect 300.00; funded 900.00
+      # YTD Feb: actual 30+20+25 = 75 -> rate 40; 50h*40 = 2000.00; indirect 400.00; funded 2400*0.5 = 1200.00
+      direct_eur: "500.00"        # 2000.00 - 1500.00 (not 20*50 = 1000 nor 20*40 = 800)
+      indirect_eur: "100.00"      # 400.00 - 300.00
+      funded_eur: "300.00"        # 1200.00 - 900.00
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "20.00", direct_eur: "500.00" }
+
+  - name: DE hourly - hours after the month do not change that month's rate
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: null, date: 2026-04-01, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-04-02, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-04-03, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-04-06, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2026-04-07, hours: 10, status: draft, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "1000.00"       # actual to end of March = 20 < 60; 20*50 = 1000.00 (with April's 50h it would be 857.14)
+      indirect_eur: "200.00"      # 1000*0.2
+      funded_eur: "600.00"        # 1200*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: DE hourly - actual hours start again in a new year
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2025, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+      - { person: anna, year: 2026, annual_cost_eur: 3000, contract_hours: 60, managing_director: false }
+    entries:
+      - { person: anna, grant: null, date: 2025-12-01, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2025-12-02, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2025-12-03, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2025-12-04, hours: 10, status: draft, late: false }
+      - { person: anna, grant: null, date: 2025-12-05, hours: 10, status: draft, late: false }
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+    period: 2026-01
+    expect:
+      direct_eur: "1000.00"       # actual 2026 = 20 < 60; 20*50 = 1000.00 (counting December 2025 would give 70h -> 857.14)
+      indirect_eur: "200.00"
+      funded_eur: "600.00"
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: managing director is charged at most 75.00 per hour
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { gerd: DE }
+    salaries:
+      - { person: gerd, year: 2026, annual_cost_eur: 190000, contract_hours: 1720, managing_director: true }
+    entries:
+      - { person: gerd, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "600.00"        # 190000/1720 = 110.47 > 75 -> 75.00; 8*75 = 600.00
+      indirect_eur: "120.00"      # 600*0.2
+      funded_eur: "360.00"        # 720*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        gerd: { eligible_hours: "8.00", direct_eur: "600.00" }
+
+  - name: managing director below the cap is charged their own rate
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { gerd: DE }
+    salaries:
+      - { person: gerd, year: 2026, annual_cost_eur: 100000, contract_hours: 1720, managing_director: true }
+    entries:
+      - { person: gerd, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "465.12"        # 100000/1720 = 58.1395... < 75; 8*100000/1720 = 465.1162... -> 465.12
+      indirect_eur: "93.02"       # 465.12*0.2 = 93.024 -> 93.02
+      funded_eur: "279.07"        # (465.12+93.02)*0.5 = 558.14*0.5 = 279.07
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: managing director cap applies to the rate after actual hours
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { gerd: DE }
+    salaries:
+      - { person: gerd, year: 2026, annual_cost_eur: 4500, contract_hours: 50, managing_director: true }
+    entries:
+      - { person: gerd, grant: null, date: 2026-01-05, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: null, date: 2026-01-06, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: null, date: 2026-01-07, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: null, date: 2026-01-08, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: null, date: 2026-01-09, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: gerd, grant: null, date: 2026-02-03, hours: 10, status: draft, late: false }
+      - { person: gerd, grant: null, date: 2026-02-04, hours: 5, status: draft, late: false }
+    period: 2026-02
+    expect:
+      # contract rate 4500/50 = 90 would be capped to 75, but actual to end Feb = 50+25 = 75 > 50,
+      # so rate = 4500/75 = 60 < 75. YTD Jan has no grant hours -> 0.
+      direct_eur: "600.00"        # 10*60
+      indirect_eur: "120.00"      # 600*0.2
+      funded_eur: "360.00"        # 720*0.5
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: DE hourly - the hourly rate is not rounded before multiplying
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 70000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 10, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "406.98"        # 10*70000/1720 = 406.9767... -> 406.98 (rate rounded first: 40.70*10 = 407.00)
+      indirect_eur: "81.40"       # 406.98*0.2 = 81.396 -> 81.40
+      funded_eur: "244.19"        # (406.98+81.40)*0.5 = 488.38*0.5 = 244.19
+      ineligible_hours: "0.00"
+      contributors: 1
+
+  - name: DE hourly - an employee of another entity is not charged and needs no record
+    grant: { method: de_hourly, entity: DE, funding_rate: 0.5, indirect_rate: 0.2 }
+    people: { anna: DE, cleo: US }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 60000, contract_hours: 1600, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: cleo, grant: this, date: 2026-03-10, hours: 5, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "300.00"        # anna 8*37.50
+      indirect_eur: "60.00"       # 300*0.2
+      funded_eur: "180.00"        # 360*0.5
+      ineligible_hours: "5.00"    # other-entity 5 (cleo)
+      contributors: 1
+      lines:
+        cleo: { eligible_hours: "0.00", other_entity_hours: "5.00", direct_eur: "0.00" }
+
+  # ---------------------------------------------------------------- the 215-day cap (eu_daily)
+  # Entries written as "@range" lines are expanded to one entry per calendar day, both ends included.
+
+  - name: EU cap - crossed during June on a single grant
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      # anna on this: 10h approved every day 2026-01-01..2026-06-30 (181 entries, 1810h)
+      - { person: anna, grant: this, date: 2026-01-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-30, hours: 10, status: approved, late: false }
+    period: 2026-06
+    expect:
+      # YTD May: 151 days * 10h = 1510h = 188.75 d <= 215 -> 188.75*400 = 75500.00; indirect 18875.00; funded 94375*0.7 = 66062.50
+      # YTD Jun: 181 days * 10h = 1810h = 226.25 d > 215 -> 215 d chargeable -> 86000.00; indirect 21500.00; funded 107500*0.7 = 75250.00
+      #          over-cap YTD = 11.25 d = 90h
+      direct_eur: "10500.00"      # 86000.00 - 75500.00
+      indirect_eur: "2625.00"     # 21500.00 - 18875.00
+      funded_eur: "9187.50"       # 75250.00 - 66062.50
+      ineligible_hours: "90.00"   # over-cap 90
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "210.00", direct_eur: "10500.00", over_cap_hours: "90.00", late_hours: "0.00", other_entity_hours: "0.00" }   # 300 - 90
+
+  - name: EU cap - the month after the cap is reached is entirely over the cap
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      # anna on this: 10h approved every day 2026-01-01..2026-07-05 (186 entries, 1860h)
+      - { person: anna, grant: this, date: 2026-01-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-01-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-02-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-06-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-05, hours: 10, status: approved, late: false }
+    period: 2026-07
+    expect:
+      # YTD Jun: 215 d chargeable = 86000.00, over-cap 90h. YTD Jul: 1860h = 232.5 d -> still 215 d = 86000.00, over-cap 17.5 d = 140h
+      direct_eur: "0.00"          # 86000.00 - 86000.00
+      indirect_eur: "0.00"
+      funded_eur: "0.00"
+      ineligible_hours: "50.00"   # over-cap 140 - 90 = 50 (all of July's 50h)
+      contributors: 0
+      lines:
+        anna: { eligible_hours: "0.00", direct_eur: "0.00", over_cap_hours: "50.00" }
+
+  - name: EU cap - shared across two eu_daily grants in proportion
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    other_grants:
+      - { id: g2, method: eu_daily, entity: DE }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      # anna on g2: 10h approved every day 2026-01-01..2026-06-19 (170 entries, 1700h)
+      - { person: anna, grant: g2, date: 2026-01-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-19, hours: 10, status: approved, late: false }
+      # anna on this: 10h approved every day 2026-07-01..2026-07-30 (30 entries, 300h)
+      - { person: anna, grant: this, date: 2026-07-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-30, hours: 10, status: approved, late: false }
+    period: 2026-07
+    expect:
+      # g2: 170 days * 10h = 1700h = 212.5 d (YTD Jun total 212.5 <= 215; this grant 0)
+      # this: 30 days * 10h = 300h = 37.5 d. YTD Jul total 250 d > 215.
+      # this keeps 37.5*215/250 = 32.25 d -> 32.25*400 = 12900.00; removed 5.25 d = 42h
+      direct_eur: "12900.00"      # 12900.00 - 0
+      indirect_eur: "3225.00"     # 12900*0.25
+      funded_eur: "11287.50"      # 16125*0.7
+      ineligible_hours: "42.00"   # over-cap 42
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "258.00", direct_eur: "12900.00", over_cap_hours: "42.00" }   # 300 - 42
+
+  - name: EU cap - more days on another grant later reduce this grant (negative month)
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    other_grants:
+      - { id: g2, method: eu_daily, entity: DE }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      # anna on g2: 10h approved every day 2026-01-01..2026-06-19 (170 entries, 1700h)
+      - { person: anna, grant: g2, date: 2026-01-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-19, hours: 10, status: approved, late: false }
+      # anna on this: 10h approved every day 2026-07-01..2026-07-30 (30 entries, 300h)
+      - { person: anna, grant: this, date: 2026-07-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-30, hours: 10, status: approved, late: false }
+      # anna on g2: 10h approved every day 2026-08-03..2026-08-08 (6 entries, 60h)
+      - { person: anna, grant: g2, date: 2026-08-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-08-10, hours: 4, status: approved, late: false }
+    period: 2026-08
+    expect:
+      # YTD Jul (previous case): 12900.00, indirect 3225.00, funded 11287.50, over-cap 42h
+      # YTD Aug: g2 + 64h = 8 d -> total 258 d; this keeps 37.5*215/258 = 31.25 d -> 12500.00; removed 6.25 d = 50h
+      #          indirect 3125.00; funded 15625*0.7 = 10937.50
+      direct_eur: "-400.00"       # 12500.00 - 12900.00
+      indirect_eur: "-100.00"     # 3125.00 - 3225.00
+      funded_eur: "-350.00"       # 10937.50 - 11287.50
+      ineligible_hours: "8.00"    # over-cap 50 - 42 (no hours on this grant in August; see README)
+      contributors: 0
+      lines:
+        anna: { direct_eur: "-400.00", over_cap_hours: "8.00" }
+
+  - name: EU cap - hours on de_hourly grants do not count toward it
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    other_grants:
+      - { id: g2, method: de_hourly, entity: DE }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      # anna on g2: 10h approved every day 2026-01-01..2026-06-19 (170 entries, 1700h)
+      - { person: anna, grant: g2, date: 2026-01-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-01-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-02-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-03-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-04-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-30, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-05-31, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: g2, date: 2026-06-19, hours: 10, status: approved, late: false }
+      # anna on this: 10h approved every day 2026-07-01..2026-07-30 (30 entries, 300h)
+      - { person: anna, grant: this, date: 2026-07-01, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-02, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-03, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-04, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-05, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-06, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-07, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-08, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-09, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-10, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-11, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-12, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-13, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-14, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-15, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-16, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-17, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-18, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-19, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-20, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-21, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-22, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-23, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-24, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-25, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-26, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-27, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-28, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-29, hours: 10, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-07-30, hours: 10, status: approved, late: false }
+    period: 2026-07
+    expect:
+      direct_eur: "15000.00"      # only eu_daily days count: 37.5 d <= 215; 37.5*400 = 15000.00
+      indirect_eur: "3750.00"     # 15000*0.25
+      funded_eur: "13125.00"      # 18750*0.7
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "300.00", direct_eur: "15000.00", over_cap_hours: "0.00" }
+
+  # ---------------------------------------------------------------- months and entities
+
+  - name: EU daily - only the period's own hours count in a month
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-02-10, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-04-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "400.00"        # YTD Mar 800.00 - YTD Feb 400.00
+      indirect_eur: "100.00"      # 200.00 - 100.00
+      funded_eur: "350.00"        # 700.00 - 350.00
+      ineligible_hours: "0.00"
+      contributors: 1
+      lines:
+        anna: { eligible_hours: "8.00", direct_eur: "400.00" }
+
+  - name: a month without approved hours is zero
+    grant: { method: eu_daily, entity: DE, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { anna: DE }
+    salaries:
+      - { person: anna, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: anna, grant: this, date: 2026-04-14, hours: 8, status: approved, late: false }
+      - { person: anna, grant: this, date: 2026-05-12, hours: 6, status: draft, late: false }
+    period: 2026-05
+    expect:
+      direct_eur: "0.00"          # YTD May 400.00 - YTD Apr 400.00
+      indirect_eur: "0.00"
+      funded_eur: "0.00"
+      ineligible_hours: "0.00"
+      contributors: 0
+
+  - name: a grant held by the US entity charges US employees and lists DE employees
+    grant: { method: eu_daily, entity: US, funding_rate: 0.7, indirect_rate: 0.25 }
+    people: { cleo: US, ana: DE }
+    salaries:
+      - { person: cleo, year: 2026, annual_cost_eur: 129000, contract_hours: 2080, managing_director: false }
+      - { person: ana, year: 2026, annual_cost_eur: 86000, contract_hours: 1720, managing_director: false }
+    entries:
+      - { person: cleo, grant: this, date: 2026-03-10, hours: 4, status: approved, late: false }
+      - { person: ana, grant: this, date: 2026-03-10, hours: 8, status: approved, late: false }
+    period: 2026-03
+    expect:
+      direct_eur: "300.00"        # cleo: 129000/215 = 600/day; 4h = 0.5 d -> 300.00
+      indirect_eur: "75.00"       # 300*0.25
+      funded_eur: "262.50"        # 375*0.7
+      ineligible_hours: "8.00"    # other-entity 8 (ana, DE)
+      contributors: 1
+      lines:
+        cleo: { eligible_hours: "4.00", direct_eur: "300.00" }
+        ana: { eligible_hours: "0.00", other_entity_hours: "8.00", direct_eur: "0.00" }
+
+
+# Fixture ids used below
+#   people:    ana ...100000001  ben ...02  cleo ...03  dan ...04  eva ...05  finn ...06  gus ...07  hana ...08  ivo ...09  jan ...0a
+#   campaigns: PHX-26-R1 ...300000001 (restricted, lead ana)   PHX-26-I2 ...02 (internal, lead ben)
+#              AUS-26-T1 ...03 (internal, lead cleo)            PHX-25-I9 ...04 (internal, lead hana)   PHX-25-R3 ...05 (restricted, lead ben)
+#   grants:    EU-LPI-26 ...600000001 (lead ana; 2026-09 closed)   DE-TGT-26 ...600000002 (lead ben; starts 2026-04-01)
+#   work packages: EU WP1 ...700000001, EU WP2 ...700000002, DE WP1 ...700000003
+
+access_cases:
+
+  # ---------------------------------------------------------------- campaigns
+  - name: a scientist with clearance sees a restricted campaign
+    as: ana
+    table: campaigns
+    op: select
+    row: { code: PHX-26-R1 }
+    expect: visible
+
+  - name: a cleared scientist of another entity sees a restricted campaign
+    as: cleo
+    table: campaigns
+    op: select
+    row: { code: PHX-26-R1 }
+    expect: visible
+
+  - name: an uncleared scientist does not see the restricted campaign they lead
+    as: ben
+    table: campaigns
+    op: select
+    row: { code: PHX-25-R3 }
+    expect: hidden
+
+  - name: a non-scientist still sees the internal campaign they lead
+    as: hana
+    table: campaigns
+    op: select
+    row: { code: PHX-25-I9 }
+    expect: visible
+
+  - name: a non-scientist does not see someone else's internal campaign
+    as: hana
+    table: campaigns
+    op: select
+    row: { code: PHX-26-I2 }
+    expect: hidden
+
+  - name: finance does not see campaigns
+    as: dan
+    table: campaigns
+    op: select
+    row: { code: AUS-26-T1 }
+    expect: hidden
+
+  - name: a scientist sees another entity's internal campaign
+    as: jan
+    table: campaigns
+    op: select
+    row: { code: AUS-26-T1 }
+    expect: visible
+
+  - name: a scientist creates an internal campaign they lead
+    as: ben
+    table: campaigns
+    op: insert
+    values: { code: PHX-26-I7, title: Mount stability check, facility: Darmstadt lab, entity: DE, classification: internal, lead_id: "00000000-0000-4000-8000-000100000002", starts_on: 2026-11-16 }
+    expect: allowed
+
+  - name: an uncleared scientist cannot create a restricted campaign
+    as: ben
+    table: campaigns
+    op: insert
+    values: { code: PHX-26-R8, title: Contrast scan, facility: Partner laser facility A, entity: DE, classification: restricted, lead_id: "00000000-0000-4000-8000-000100000002", starts_on: 2026-11-16 }
+    expect: denied
+
+  - name: a cleared scientist creates a restricted campaign they lead
+    as: ana
+    table: campaigns
+    op: insert
+    values: { code: PHX-26-R9, title: Second conversion run, facility: Partner laser facility A, entity: DE, classification: restricted, lead_id: "00000000-0000-4000-8000-000100000001", starts_on: 2026-11-23 }
+    expect: allowed
+
+  - name: a scientist cannot create a campaign led by someone else
+    as: ana
+    table: campaigns
+    op: insert
+    values: { code: PHX-26-I8, title: Alignment follow-up, facility: Darmstadt lab, entity: DE, classification: internal, lead_id: "00000000-0000-4000-8000-000100000002", starts_on: 2026-11-16 }
+    expect: denied
+
+  - name: a non-scientist cannot create a campaign even as its lead
+    as: hana
+    table: campaigns
+    op: insert
+    values: { code: PHX-26-I6, title: Coating supplier visit, facility: Darmstadt lab, entity: DE, classification: internal, lead_id: "00000000-0000-4000-8000-000100000008", starts_on: 2026-11-16 }
+    expect: denied
+
+  - name: a lead renames their internal campaign
+    as: ben
+    table: campaigns
+    op: update
+    row: { code: PHX-26-I2 }
+    change: { title: Target alignment study (phase 1) }
+    expect: allowed
+
+  - name: an uncleared lead cannot make their campaign restricted
+    as: ben
+    table: campaigns
+    op: update
+    row: { code: PHX-26-I2 }
+    change: { classification: restricted }
+    expect: denied
+
+  - name: a lead cannot hand their campaign to someone else
+    as: ben
+    table: campaigns
+    op: update
+    row: { code: PHX-26-I2 }
+    change: { lead_id: "00000000-0000-4000-8000-00010000000a" }
+    expect: denied
+
+  - name: a scientist cannot edit a campaign they do not lead
+    as: jan
+    table: campaigns
+    op: update
+    row: { code: PHX-26-I2 }
+    change: { title: Renamed by someone else }
+    expect: denied
+
+  - name: an uncleared lead cannot edit their own restricted campaign
+    as: ben
+    table: campaigns
+    op: update
+    row: { code: PHX-25-R3 }
+    change: { title: Pre-pulse contrast measurement (final) }
+    expect: denied
+
+  - name: a cleared lead edits their restricted campaign
+    as: ana
+    table: campaigns
+    op: update
+    row: { code: PHX-26-R1 }
+    change: { title: "Proton beam conversion, restricted (extended)" }
+    expect: allowed
+
+  - name: a non-scientist lead cannot edit their campaign
+    as: hana
+    table: campaigns
+    op: update
+    row: { code: PHX-25-I9 }
+    change: { title: Debris shield coating trial (archived) }
+    expect: denied
+
+  - name: nobody deletes campaigns, not even their lead
+    as: ana
+    table: campaigns
+    op: delete
+    row: { code: PHX-26-R1 }
+    expect: denied
+
+  # ---------------------------------------------------------------- campaign_members
+  - name: every employee sees campaign members
+    as: hana
+    table: campaign_members
+    op: select
+    row: { campaign_id: "00000000-0000-4000-8000-000300000001", person_id: "00000000-0000-4000-8000-000100000003" }
+    expect: visible
+
+  - name: a campaign lead adds a member
+    as: ben
+    table: campaign_members
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", person_id: "00000000-0000-4000-8000-00010000000a", role: operator }
+    expect: allowed
+
+  - name: a cleared lead adds a member to their restricted campaign
+    as: ana
+    table: campaign_members
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000001", person_id: "00000000-0000-4000-8000-00010000000a", role: observer }
+    expect: allowed
+
+  - name: an operator cannot add members
+    as: ana
+    table: campaign_members
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", person_id: "00000000-0000-4000-8000-00010000000a", role: operator }
+    expect: denied
+
+  - name: a non-scientist lead cannot add members
+    as: hana
+    table: campaign_members
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000004", person_id: "00000000-0000-4000-8000-00010000000a", role: operator }
+    expect: denied
+
+  - name: a campaign lead removes a member
+    as: ben
+    table: campaign_members
+    op: delete
+    row: { campaign_id: "00000000-0000-4000-8000-000300000002", person_id: "00000000-0000-4000-8000-000100000001" }
+    expect: allowed
+
+  - name: an observer cannot remove another member
+    as: ben
+    table: campaign_members
+    op: delete
+    row: { campaign_id: "00000000-0000-4000-8000-000300000001", person_id: "00000000-0000-4000-8000-000100000003" }
+    expect: denied
+
+  - name: an operator cannot remove themselves
+    as: cleo
+    table: campaign_members
+    op: delete
+    row: { campaign_id: "00000000-0000-4000-8000-000300000001", person_id: "00000000-0000-4000-8000-000100000003" }
+    expect: denied
+
+  - name: nobody changes a member's role
+    as: ben
+    table: campaign_members
+    op: update
+    row: { campaign_id: "00000000-0000-4000-8000-000300000002", person_id: "00000000-0000-4000-8000-000100000001" }
+    change: { role: lead }
+    expect: denied
+
+  # ---------------------------------------------------------------- shots
+  - name: a scientist sees internal shots
+    as: ben
+    table: shots
+    op: select
+    row: { id: "00000000-0000-4000-8000-000500000004" }
+    expect: visible
+
+  - name: an uncleared scientist does not see restricted shots, even of a campaign they observe
+    as: ben
+    table: shots
+    op: select
+    row: { id: "00000000-0000-4000-8000-000500000001" }
+    expect: hidden
+
+  - name: a cleared scientist of another entity sees restricted shots
+    as: cleo
+    table: shots
+    op: select
+    row: { id: "00000000-0000-4000-8000-000500000003" }
+    expect: visible
+
+  - name: a non-scientist does not see shots, even of the campaign they lead
+    as: hana
+    table: shots
+    op: select
+    row: { campaign_id: "00000000-0000-4000-8000-000300000002" }
+    expect: hidden
+
+  - name: a cleared lead logs a restricted shot
+    as: ana
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000001", shot_no: 3, fired_at: "2026-10-02T09:00:00Z", outcome: nominal, classification: restricted, logged_by: "00000000-0000-4000-8000-000100000001" }
+    expect: allowed
+
+  - name: a cleared operator of another entity logs a restricted shot
+    as: cleo
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000001", shot_no: 4, fired_at: "2026-10-02T10:00:00Z", outcome: nominal, classification: restricted, logged_by: "00000000-0000-4000-8000-000100000003" }
+    expect: allowed
+
+  - name: an uncleared observer cannot log a restricted shot
+    as: ben
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000001", shot_no: 5, fired_at: "2026-10-02T11:00:00Z", outcome: nominal, classification: restricted, logged_by: "00000000-0000-4000-8000-000100000002" }
+    expect: denied
+
+  - name: a lead logs an internal shot
+    as: ben
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", shot_no: 3, fired_at: "2026-10-15T09:00:00Z", outcome: nominal, classification: internal, logged_by: "00000000-0000-4000-8000-000100000002" }
+    expect: allowed
+
+  - name: an operator logs an internal shot
+    as: ana
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", shot_no: 4, fired_at: "2026-10-15T10:00:00Z", outcome: partial, classification: internal, logged_by: "00000000-0000-4000-8000-000100000001" }
+    expect: allowed
+
+  - name: an operator logs a shot in a past campaign
+    as: ben
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000004", shot_no: 1, fired_at: "2025-05-20T09:00:00Z", outcome: nominal, classification: internal, logged_by: "00000000-0000-4000-8000-000100000002" }
+    expect: allowed
+
+  - name: a shot cannot be logged in someone else's name
+    as: ana
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", shot_no: 5, fired_at: "2026-10-15T11:00:00Z", outcome: nominal, classification: internal, logged_by: "00000000-0000-4000-8000-000100000002" }
+    expect: denied
+
+  - name: a scientist who is not a campaign member cannot log a shot
+    as: jan
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000002", shot_no: 6, fired_at: "2026-10-15T12:00:00Z", outcome: nominal, classification: internal, logged_by: "00000000-0000-4000-8000-00010000000a" }
+    expect: denied
+
+  - name: a non-scientist lead cannot log a shot
+    as: hana
+    table: shots
+    op: insert
+    values: { campaign_id: "00000000-0000-4000-8000-000300000004", shot_no: 2, fired_at: "2025-05-21T09:00:00Z", outcome: nominal, classification: internal, logged_by: "00000000-0000-4000-8000-000100000008" }
+    expect: denied
+
+  - name: shots are append-only, the logger cannot edit one
+    as: ana
+    table: shots
+    op: update
+    row: { id: "00000000-0000-4000-8000-000500000001" }
+    change: { outcome: partial }
+    expect: denied
+
+  - name: shots are append-only, nobody deletes one
+    as: ana
+    table: shots
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000500000003" }
+    expect: denied
+
+  # ---------------------------------------------------------------- targets and target_events
+  - name: every employee sees targets
+    as: hana
+    table: targets
+    op: select
+    row: { serial: TGT-0001 }
+    expect: visible
+
+  - name: a scientist registers a fabricated target
+    as: ben
+    table: targets
+    op: insert
+    values: { serial: TGT-0101, batch: B-1101, design: CH foil 10 um, status: fabricated }
+    expect: allowed
+
+  - name: a new target must start as fabricated
+    as: ben
+    table: targets
+    op: insert
+    values: { serial: TGT-0102, batch: B-1101, design: CH foil 10 um, status: allocated }
+    expect: denied
+
+  - name: a non-scientist cannot register a target
+    as: hana
+    table: targets
+    op: insert
+    values: { serial: TGT-0103, batch: B-1101, design: CH foil 10 um, status: fabricated }
+    expect: denied
+
+  - name: a scientist moves a target to characterized
+    as: jan
+    table: targets
+    op: update
+    row: { serial: TGT-0005 }
+    change: { status: characterized }
+    expect: allowed
+
+  - name: a non-scientist cannot change a target
+    as: gus
+    table: targets
+    op: update
+    row: { serial: TGT-0005 }
+    change: { status: scrapped }
+    expect: denied
+
+  - name: nobody deletes a target
+    as: cleo
+    table: targets
+    op: delete
+    row: { serial: TGT-0006 }
+    expect: denied
+
+  - name: every employee sees target history
+    as: hana
+    table: target_events
+    op: select
+    row: { id: 2 }
+    expect: visible
+
+  - name: target history is written only by the system
+    as: cleo
+    table: target_events
+    op: insert
+    values: { target_id: "00000000-0000-4000-8000-000400000005", from_status: fabricated, to_status: characterized, by_person: "00000000-0000-4000-8000-000100000003", note: hand-written event }
+    expect: denied
+
+  # ---------------------------------------------------------------- people and settings
+  - name: every employee sees the people directory
+    as: hana
+    table: people
+    op: select
+    row: { id: "00000000-0000-4000-8000-000100000001" }
+    expect: visible
+
+  - name: nobody edits people through the app, not even PeopleOps
+    as: eva
+    table: people
+    op: update
+    row: { id: "00000000-0000-4000-8000-000100000008" }
+    change: { team: Finance }
+    expect: denied
+
+  - name: an executive cannot lower the reporting group size setting
+    as: gus
+    table: settings
+    op: update
+    row: { key: min_group_size }
+    change: { value: "1" }
+    expect: denied
+
+  # ---------------------------------------------------------------- grants, work packages, grant members
+  - name: every employee sees grants
+    as: hana
+    table: grants
+    op: select
+    row: { code: EU-LPI-26 }
+    expect: visible
+
+  - name: finance creates a grant
+    as: dan
+    table: grants
+    op: insert
+    values: { code: DE-OPT-27, title: Optics lifetime study, funder: Federal ministry (cost basis), method: de_hourly, entity: DE, starts_on: 2027-01-01, ends_on: 2028-12-31, funding_rate: 0.5, indirect_rate: 0.8 }
+    expect: allowed
+
+  - name: an executive cannot create a grant
+    as: gus
+    table: grants
+    op: insert
+    values: { code: DE-OPT-28, title: Optics lifetime study, funder: Federal ministry (cost basis), method: de_hourly, entity: DE, starts_on: 2027-01-01, ends_on: 2028-12-31, funding_rate: 0.5, indirect_rate: 0.8 }
+    expect: denied
+
+  - name: finance edits a grant
+    as: dan
+    table: grants
+    op: update
+    row: { code: DE-TGT-26 }
+    change: { title: Mass production of fusion targets (phase A) }
+    expect: allowed
+
+  - name: finance of another entity can also edit a grant
+    as: ivo
+    table: grants
+    op: update
+    row: { code: DE-TGT-26 }
+    change: { title: Mass production of fusion targets (rev) }
+    expect: allowed
+
+  - name: a grant lead cannot edit the grant
+    as: ana
+    table: grants
+    op: update
+    row: { code: EU-LPI-26 }
+    change: { funding_rate: 1 }
+    expect: denied
+
+  - name: nobody deletes a grant, not even finance
+    as: dan
+    table: grants
+    op: delete
+    row: { code: DE-TGT-26 }
+    expect: denied
+
+  - name: finance adds a work package
+    as: dan
+    table: work_packages
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", code: WP2, title: Quality assurance }
+    expect: allowed
+
+  - name: a grant lead cannot add a work package
+    as: ben
+    table: work_packages
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", code: WP3, title: Scale-up }
+    expect: denied
+
+  - name: finance adds a grant member
+    as: dan
+    table: grant_members
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", person_id: "00000000-0000-4000-8000-00010000000a", role: member }
+    expect: allowed
+
+  - name: a grant lead cannot add a grant member
+    as: ben
+    table: grant_members
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", person_id: "00000000-0000-4000-8000-00010000000a", role: member }
+    expect: denied
+
+  - name: finance removes a grant member
+    as: dan
+    table: grant_members
+    op: delete
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", person_id: "00000000-0000-4000-8000-000100000008" }
+    expect: allowed
+
+  - name: a grant lead cannot remove a grant member
+    as: ana
+    table: grant_members
+    op: delete
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", person_id: "00000000-0000-4000-8000-00010000000a" }
+    expect: denied
+
+  # ---------------------------------------------------------------- time_entries: who sees what
+  - name: a person sees their own entry
+    as: hana
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    expect: visible
+
+  - name: a grant member does not see a colleague's entry on the same grant
+    as: hana
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    expect: hidden
+
+  - name: a grant lead sees members' entries on their grant
+    as: ben
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    expect: visible
+
+  - name: a grant lead also sees members' drafts
+    as: ana
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    expect: visible
+
+  - name: a lead of one grant does not see entries on a grant where they are only a member
+    as: ben
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-00080000000c" }
+    expect: hidden
+
+  - name: a grant lead does not see entries without a grant
+    as: ana
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-00080000000a" }
+    expect: hidden
+
+  - name: finance sees any entry
+    as: dan
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    expect: visible
+
+  - name: finance of another entity also sees entries
+    as: ivo
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    expect: visible
+
+  - name: an executive does not see others' entries
+    as: gus
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000008" }
+    expect: hidden
+
+  - name: PeopleOps does not see time entries
+    as: eva
+    table: time_entries
+    op: select
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    expect: hidden
+
+  # ---------------------------------------------------------------- time_entries: recording
+  - name: a member records a submitted entry on their grant
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2026-10-27, grant_id: "00000000-0000-4000-8000-000600000002", work_package_id: "00000000-0000-4000-8000-000700000003", activity: Supplier follow-up, hours: 2, status: submitted }
+    expect: allowed
+
+  - name: someone without a grant records a draft without a grant
+    as: dan
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000004", work_date: 2026-10-27, activity: Reconciliation, hours: 4, status: draft }
+    expect: allowed
+
+  - name: nobody records an entry as already approved
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2026-10-28, activity: Contract review, hours: 2, status: approved }
+    expect: denied
+
+  - name: nobody records hours for someone else
+    as: ben
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000001", work_date: 2026-10-28, grant_id: "00000000-0000-4000-8000-000600000002", work_package_id: "00000000-0000-4000-8000-000700000003", activity: Fabrication review, hours: 2, status: draft }
+    expect: denied
+
+  - name: an entry over 10 hours is refused
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2026-10-28, activity: Long day, hours: 10.25, status: draft }
+    expect: denied
+
+  - name: the daily limit counts existing entries (9 + 1.25 > 10)
+    as: ana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000001", work_date: 2026-10-02, grant_id: "00000000-0000-4000-8000-000600000001", work_package_id: "00000000-0000-4000-8000-000700000001", activity: Data backup, hours: 1.25, status: draft }
+    expect: denied
+
+  - name: the daily limit allows exactly 10 hours (9 + 1)
+    as: ana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000001", work_date: 2026-10-02, grant_id: "00000000-0000-4000-8000-000600000001", work_package_id: "00000000-0000-4000-8000-000700000001", activity: Data backup, hours: 1, status: draft }
+    expect: allowed
+
+  - name: hours must be in quarter hours
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2026-10-28, activity: Contract review, hours: 1.3, status: draft }
+    expect: denied
+
+  - name: hours must be more than zero
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2026-10-28, activity: Contract review, hours: 0, status: draft }
+    expect: denied
+
+  - name: no hours for a future date
+    as: hana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000008", work_date: 2030-01-07, activity: Planning, hours: 2, status: draft }
+    expect: denied
+
+  - name: no hours on a grant before it starts
+    as: ana
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000001", work_date: 2026-03-16, grant_id: "00000000-0000-4000-8000-000600000002", work_package_id: "00000000-0000-4000-8000-000700000003", activity: Early review, hours: 2, status: draft }
+    expect: denied
+
+  - name: no hours can be added to a closed month of a grant
+    as: ben
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000002", work_date: 2026-09-21, grant_id: "00000000-0000-4000-8000-000600000001", work_package_id: "00000000-0000-4000-8000-000700000002", activity: PIC simulation runs, hours: 3, status: draft }
+    expect: denied
+
+  - name: no hours on a grant the person is not a member of
+    as: jan
+    table: time_entries
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-00010000000a", work_date: 2026-10-27, grant_id: "00000000-0000-4000-8000-000600000002", work_package_id: "00000000-0000-4000-8000-000700000003", activity: Fabrication help, hours: 2, status: draft }
+    expect: denied
+
+  # ---------------------------------------------------------------- time_entries: owner edits
+  - name: the owner edits the hours of their draft
+    as: cleo
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    change: { hours: 5 }
+    expect: allowed
+
+  - name: the owner submits their draft
+    as: cleo
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    change: { status: submitted }
+    expect: allowed
+
+  - name: the owner cannot approve their own draft
+    as: cleo
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    change: { status: approved }
+    expect: denied
+
+  - name: the owner cannot move a draft into a closed month
+    as: cleo
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    change: { work_date: 2026-09-22 }
+    expect: denied
+
+  - name: the owner cannot move a draft to a future date
+    as: cleo
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    change: { work_date: 2030-01-07 }
+    expect: denied
+
+  - name: the owner cannot raise a draft above 10 hours
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-00080000000c" }
+    change: { hours: 10.25 }
+    expect: denied
+
+  - name: the owner cannot give their draft to someone else
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-00080000000c" }
+    change: { person_id: "00000000-0000-4000-8000-000100000002" }
+    expect: denied
+
+  - name: the owner corrects a returned entry and resubmits it
+    as: hana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    change: { hours: 2.5, status: submitted }
+    expect: allowed
+
+  - name: the owner moves a returned entry back to draft
+    as: hana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    change: { status: draft }
+    expect: allowed
+
+  - name: a returned entry cannot be edited while it stays returned
+    as: hana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    change: { hours: 2.5 }
+    expect: denied
+
+  - name: the owner cannot edit a submitted entry
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000004" }
+    change: { hours: 4 }
+    expect: denied
+
+  - name: the owner cannot edit an approved entry
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000010" }
+    change: { hours: 4 }
+    expect: denied
+
+  # ---------------------------------------------------------------- time_entries: lead decisions
+  - name: a grant lead approves a member's submitted entry
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: approved }
+    expect: allowed
+
+  - name: a grant lead returns a member's submitted entry with a reason
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: returned, note: Please book this on WP1 activity detail }
+    expect: allowed
+
+  - name: a grant lead approves another lead's submitted entry on the grant they lead
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000004" }
+    change: { status: approved }
+    expect: allowed
+
+  - name: a lead cannot approve their own submitted entry on the grant they lead
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000008" }
+    change: { status: approved }
+    expect: denied
+
+  - name: someone who leads another grant cannot approve their own entry on a grant they only belong to
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: approved }
+    expect: denied
+
+  - name: a plain member cannot approve a colleague's entry
+    as: jan
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000004" }
+    change: { status: approved }
+    expect: denied
+
+  - name: finance cannot approve entries
+    as: dan
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: approved }
+    expect: denied
+
+  - name: a lead cannot change the hours while approving
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: approved, hours: 1 }
+    expect: denied
+
+  - name: a lead cannot change the hours of a submitted entry without deciding
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { hours: 1 }
+    expect: denied
+
+  - name: a lead cannot return an entry without a reason
+    as: ben
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000006" }
+    change: { status: returned }
+    expect: denied
+
+  - name: a lead cannot reopen an approved entry of a closed month
+    as: ana
+    table: time_entries
+    op: update
+    row: { id: "00000000-0000-4000-8000-000800000002" }
+    change: { status: returned, note: Reopening September }
+    expect: denied
+
+  # ---------------------------------------------------------------- time_entries: deletes
+  - name: the owner deletes their draft
+    as: cleo
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    expect: allowed
+
+  - name: the owner deletes their draft without a grant
+    as: dan
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-00080000000a" }
+    expect: allowed
+
+  - name: the owner cannot delete a returned entry
+    as: hana
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    expect: denied
+
+  - name: the owner cannot withdraw a submitted entry by deleting it
+    as: ben
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000004" }
+    expect: denied
+
+  - name: the owner cannot delete an approved entry
+    as: ana
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000010" }
+    expect: denied
+
+  - name: a grant lead cannot delete a member's draft
+    as: ana
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000005" }
+    expect: denied
+
+  - name: finance cannot delete entries
+    as: dan
+    table: time_entries
+    op: delete
+    row: { id: "00000000-0000-4000-8000-000800000007" }
+    expect: denied
+
+  # ---------------------------------------------------------------- salary_costs
+  - name: PeopleOps sees personnel costs of their own entity
+    as: eva
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    expect: visible
+
+  - name: PeopleOps does not see personnel costs of another entity
+    as: eva
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000003", year: 2026 }
+    expect: hidden
+
+  - name: US PeopleOps sees US personnel costs
+    as: finn
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000003", year: 2026 }
+    expect: visible
+
+  - name: US PeopleOps does not see DE personnel costs
+    as: finn
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    expect: hidden
+
+  - name: finance sees personnel costs of its own entity
+    as: dan
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-00010000000a", year: 2026 }
+    expect: visible
+
+  - name: finance does not see personnel costs of another entity
+    as: dan
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000009", year: 2026 }
+    expect: hidden
+
+  - name: US finance does not see DE personnel costs
+    as: ivo
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000002", year: 2026 }
+    expect: hidden
+
+  - name: an executive does not see even their own personnel cost
+    as: gus
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000007", year: 2026 }
+    expect: hidden
+
+  - name: an employee does not see their own personnel cost
+    as: hana
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000008", year: 2026 }
+    expect: hidden
+
+  - name: the cost-snapshot job sees personnel costs of its entity
+    as: cost-snapshot
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    expect: visible
+
+  - name: the cost-snapshot job does not see personnel costs of another entity
+    as: cost-snapshot
+    table: salary_costs
+    op: select
+    row: { person_id: "00000000-0000-4000-8000-000100000003", year: 2026 }
+    expect: hidden
+
+  - name: PeopleOps adds a personnel cost record in their entity
+    as: eva
+    table: salary_costs
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-00010000000a", entity: DE, year: 2027, annual_cost_eur: 74000, contract_hours: 1720, managing_director: false }
+    expect: allowed
+
+  - name: PeopleOps cannot add a record for another entity
+    as: eva
+    table: salary_costs
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000009", entity: US, year: 2027, annual_cost_eur: 104000, contract_hours: 2080, managing_director: false }
+    expect: denied
+
+  - name: US PeopleOps adds a US record
+    as: finn
+    table: salary_costs
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000003", entity: US, year: 2027, annual_cost_eur: 121000, contract_hours: 2080, managing_director: false }
+    expect: allowed
+
+  - name: finance cannot add personnel cost records
+    as: dan
+    table: salary_costs
+    op: insert
+    values: { person_id: "00000000-0000-4000-8000-000100000002", entity: DE, year: 2027, annual_cost_eur: 84000, contract_hours: 1720, managing_director: false }
+    expect: denied
+
+  - name: PeopleOps corrects a personnel cost in their entity
+    as: eva
+    table: salary_costs
+    op: update
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    change: { annual_cost_eur: 99000 }
+    expect: allowed
+
+  - name: PeopleOps cannot move a record to another entity
+    as: eva
+    table: salary_costs
+    op: update
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    change: { entity: US }
+    expect: denied
+
+  - name: PeopleOps cannot change another entity's record
+    as: finn
+    table: salary_costs
+    op: update
+    row: { person_id: "00000000-0000-4000-8000-000100000001", year: 2026 }
+    change: { annual_cost_eur: 1 }
+    expect: denied
+
+  - name: finance cannot change personnel costs
+    as: dan
+    table: salary_costs
+    op: update
+    row: { person_id: "00000000-0000-4000-8000-000100000002", year: 2026 }
+    change: { annual_cost_eur: 1 }
+    expect: denied
+
+  - name: nobody deletes personnel cost records
+    as: eva
+    table: salary_costs
+    op: delete
+    row: { person_id: "00000000-0000-4000-8000-00010000000a", year: 2026 }
+    expect: denied
+
+  # ---------------------------------------------------------------- cost_periods
+  - name: every employee sees cost periods
+    as: hana
+    table: cost_periods
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    expect: visible
+
+  - name: finance closes an open month
+    as: dan
+    table: cost_periods
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    change: { status: closed, closed_at: "2026-11-03T10:00:00Z", closed_by: "00000000-0000-4000-8000-000100000004" }
+    expect: allowed
+
+  - name: a closed month cannot be reopened
+    as: dan
+    table: cost_periods
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    change: { status: open }
+    expect: denied
+
+  - name: a grant lead cannot close a month
+    as: ben
+    table: cost_periods
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    change: { status: closed }
+    expect: denied
+
+  - name: finance opens a new cost period
+    as: dan
+    table: cost_periods
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-11", status: open }
+    expect: allowed
+
+  # ---------------------------------------------------------------- grant_cost_snapshots
+  - name: finance sees a grant total
+    as: dan
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    expect: visible
+
+  - name: finance of another entity sees grant totals
+    as: ivo
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-10" }
+    expect: visible
+
+  - name: an executive sees a total over three contributors (September)
+    as: gus
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    expect: visible
+
+  - name: an executive sees a total over three contributors (October)
+    as: gus
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-10" }
+    expect: visible
+
+  - name: an executive does not see a total over one contributor
+    as: gus
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    expect: hidden
+
+  - name: a grant lead does not see grant totals
+    as: ana
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    expect: hidden
+
+  - name: PeopleOps does not see grant totals
+    as: eva
+    table: grant_cost_snapshots
+    op: select
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    expect: hidden
+
+  - name: finance stores a snapshot for an open month
+    as: dan
+    table: grant_cost_snapshots
+    op: insert
+    values: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-09", direct_eur: 0, indirect_eur: 0, funded_eur: 0, ineligible_hours: 0, contributors: 0 }
+    expect: allowed
+
+  - name: finance updates the snapshot of an open month
+    as: dan
+    table: grant_cost_snapshots
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    change: { direct_eur: 120.00 }
+    expect: allowed
+
+  - name: the figures of a closed month cannot change, not even by finance
+    as: dan
+    table: grant_cost_snapshots
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-09" }
+    change: { direct_eur: 1000.00 }
+    expect: denied
+
+  - name: an executive cannot change a total
+    as: gus
+    table: grant_cost_snapshots
+    op: update
+    row: { grant_id: "00000000-0000-4000-8000-000600000001", period: "2026-10" }
+    change: { contributors: 5 }
+    expect: denied
+
+  - name: nobody deletes a snapshot
+    as: dan
+    table: grant_cost_snapshots
+    op: delete
+    row: { grant_id: "00000000-0000-4000-8000-000600000002", period: "2026-10" }
+    expect: denied
+
+  # ---------------------------------------------------------------- audit_events
+  - name: finance reads the audit trail
+    as: dan
+    table: audit_events
+    op: select
+    row: { id: 1 }
+    expect: visible
+
+  - name: finance of another entity reads the audit trail
+    as: ivo
+    table: audit_events
+    op: select
+    row: { id: 1 }
+    expect: visible
+
+  - name: an executive does not read the audit trail
+    as: gus
+    table: audit_events
+    op: select
+    row: { id: 1 }
+    expect: hidden
+
+  - name: the audit trail cannot be written by hand
+    as: dan
+    table: audit_events
+    op: insert
+    values: { table_name: cost_periods, row_id: forged, action: update, actor: "00000000-0000-4000-8000-000100000004", change: "{}" }
+    expect: denied
+
+  - name: the audit trail cannot be edited
+    as: dan
+    table: audit_events
+    op: update
+    row: { id: 1 }
+    change: { action: insert }
+    expect: denied
+
+  - name: the audit trail cannot be deleted
+    as: dan
+    table: audit_events
+    op: delete
+    row: { id: 1 }
+    expect: denied
+
+  # ---------------------------------------------------------------- outbox
+  - name: an employee can queue an outbox message
+    as: hana
+    table: outbox
+    op: insert
+    values: { topic: time.reminder, payload: '{"person_id":"00000000-0000-4000-8000-000100000008","week":"2026-W45"}' }
+    expect: allowed
+
+  - name: an employee does not see the outbox, even a message about them
+    as: hana
+    table: outbox
+    op: select
+    row: { id: 1 }
+    expect: hidden
+
+  - name: finance does not see the outbox
+    as: dan
+    table: outbox
+    op: select
+    row: { id: 1 }
+    expect: hidden
+
+  - name: an employee cannot mark a message dispatched
+    as: hana
+    table: outbox
+    op: update
+    row: { id: 1 }
+    change: { dispatched_at: "2026-10-20T08:00:00Z" }
+    expect: denied
+
+  - name: the dispatcher sees the outbox
+    as: dispatcher
+    table: outbox
+    op: select
+    row: { id: 1 }
+    expect: visible
+
+  - name: the dispatcher marks a message dispatched
+    as: dispatcher
+    table: outbox
+    op: update
+    row: { id: 1 }
+    change: { dispatched_at: "2026-10-20T08:00:00Z", attempts: 1 }
+    expect: allowed
+
+  - name: the reminders job queues a message
+    as: reminders
+    table: outbox
+    op: insert
+    values: { topic: time.reminder, payload: '{"person_id":"00000000-0000-4000-8000-00010000000a","week":"2026-W45"}' }
+    expect: allowed
+
+  - name: nobody deletes outbox messages, not even the dispatcher
+    as: dispatcher
+    table: outbox
+    op: delete
+    row: { id: 1 }
+    expect: denied

@@ -12,7 +12,7 @@ const Hours = z.number().positive().max(24).multipleOf(0.25);
 
 const ENTRY_COLUMNS = `e.id, e.person_id, p.display_name AS person_name, to_char(e.work_date, 'YYYY-MM-DD') AS work_date,
   e.work_package_id, wp.code AS work_package_code, e.grant_id, g.code AS grant_code, e.activity, e.hours::float AS hours,
-  e.status, e.approved_by, e.approved_at, e.recorded_at, e.late, e.note`;
+  e.status, e.approved_by, e.approved_at, e.recorded_at, e.late, e.note, e.return_reason`;
 const ENTRY_FROM = `time_entries e JOIN people p ON p.id = e.person_id
   LEFT JOIN work_packages wp ON wp.id = e.work_package_id LEFT JOIN grants g ON g.id = e.grant_id`;
 
@@ -207,8 +207,13 @@ export function grantsRoutes(app: FastifyInstance, deps: Deps): void {
     handler: ({ db, params, body }) =>
       db(async (c) => {
         const r = await c.query(
-          `UPDATE time_entries SET status = $2 WHERE id = $1 AND status = 'submitted' RETURNING id, status, approved_by, approved_at`,
-          [params.id, body.decision === "approve" ? "approved" : "returned"],
+          `UPDATE time_entries SET status = $2, return_reason = $3 WHERE id = $1 AND status = 'submitted'
+           RETURNING id, status, approved_by, approved_at, return_reason`,
+          [
+            params.id,
+            body.decision === "approve" ? "approved" : "returned",
+            body.decision === "return" ? body.reason : null,
+          ],
         );
         if (!r.rowCount) throw notFound("Submitted entry");
         if (body.decision === "return") {
@@ -232,7 +237,14 @@ export function grantsRoutes(app: FastifyInstance, deps: Deps): void {
       db(
         async (c) => {
           try {
-            return await computeGrantCost(c, params.id, query.period);
+            const result = await computeGrantCost(c, params.id, query.period);
+            const names = new Map(
+              (await c.query("SELECT id, display_name FROM people")).rows.map((p) => [p.id, p.display_name]),
+            );
+            return {
+              ...result,
+              lines: result.lines.map((l) => ({ ...l, person_name: names.get(l.person_id) ?? "" })),
+            };
           } catch (err) {
             if (err instanceof GrantNotFoundError) throw notFound("Grant");
             if (err instanceof MissingSalaryError) {

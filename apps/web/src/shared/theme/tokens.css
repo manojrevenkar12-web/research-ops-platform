@@ -1,0 +1,102 @@
+/* Design tokens. Components use these variables only; there are no colours, sizes or durations in
+   components themselves. Contrast of every text token on its surfaces is at least 4.5:1 (checked by axe in
+   the end-to-end tests). */
+:root {
+  color-scheme: light;
+
+  /* paper and ink */
+  --paper: #eef1f3;
+  --surface: #ffffff;
+  --surface-sunk: #f5f7f8;
+  --line: #d5dce1;
+  --line-strong: #aeb9c2;
+  --ink: #18233a;
+  --ink-2: #44506a;
+  --ink-3: #5a6677;
+
+  /* the laser: frequency-doubled Nd:YAG green, darkened for contrast */
+  --accent: #19704b;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2f1e9;
+
+  /* restricted technical data */
+  --restricted: #5b3fa8;
+  --restricted-soft: #eee9fa;
+
+  /* states */
+  --warn: #8a5300;
+  --warn-soft: #fbefd9;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --ok: #19704b;
+
+  /* outcome of a shot */
+  --shot-nominal: #19704b;
+  --shot-partial: #b07a00;
+  --shot-misfire: #b42318;
+  --shot-aborted: #7d8794;
+
+  /* type */
+  --font: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-s: 0.8125rem;
+  --text-m: 0.9375rem;
+  --text-l: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2.125rem;
+  --leading-tight: 1.15;
+  --leading: 1.5;
+  --weight-regular: 420;
+  --weight-medium: 540;
+  --weight-strong: 640;
+  --width-condensed: 82%;
+
+  /* space, size, shape */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --rail-width: 15rem;
+  --content-max: 76rem;
+  --measure: 68ch;
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent);
+  --shadow-raised: 0 1px 2px rgb(24 35 58 / 0.08), 0 8px 24px rgb(24 35 58 / 0.08);
+
+  /* motion */
+  --dur-fast: 120ms;
+  --dur: 220ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #0f1621;
+    --surface: #162030;
+    --surface-sunk: #121a27;
+    --line: #2a3648;
+    --line-strong: #3c4a5f;
+    --ink: #e7ecf2;
+    --ink-2: #b9c3cf;
+    --ink-3: #9ba7b5;
+    --accent: #52c48d;
+    --accent-ink: #0d1a14;
+    --accent-soft: #173327;
+    --restricted: #bba6f6;
+    --restricted-soft: #2a2245;
+    --warn: #f0b75a;
+    --warn-soft: #3a2b12;
+    --danger: #ff8a7d;
+    --danger-soft: #3d1a17;
+    --ok: #52c48d;
+    --shot-nominal: #52c48d;
+    --shot-partial: #f0b75a;
+    --shot-misfire: #ff8a7d;
+    --shot-aborted: #8f9aa8;
+    --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
+  }
+}

@@ -6,7 +6,8 @@ import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 import { z } from "zod";
 
-export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
+/** The repository root (config/ lives there). A bundled deployment sets ROP_ROOT to where it copied config/. */
+export const ROOT = process.env.ROP_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
 function readYaml(name: string): unknown {
   return parse(readFileSync(join(ROOT, "config", name), "utf8"));

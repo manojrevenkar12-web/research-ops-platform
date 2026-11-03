@@ -120,6 +120,73 @@ describe("grant time recording", () => {
     }
   });
 
+  // Found by the first blind held-out run (heldout/blind-1, now a regression set).
+  it("the database itself requires a reason to return an entry, keeps it on the entry, and quarter hours", async () => {
+    const asBen = async (sql: string, params: unknown[]) => {
+      const c = await h.db.app.connect();
+      try {
+        await c.query("BEGIN");
+        await c.query(
+          "SELECT set_config('app.person_id', $1, true), set_config('app.roles', 'Staff,Scientist', true)",
+          [PERSONAS.ben.personId],
+        );
+        return await c.query(sql, params);
+      } finally {
+        await c.query("ROLLBACK");
+        c.release();
+      }
+    };
+    await expect(
+      asBen("UPDATE time_entries SET status = 'returned' WHERE id = $1", [ID.te(6)]),
+    ).rejects.toThrow(/needs a reason/);
+    const ok = await asBen(
+      "UPDATE time_entries SET status = 'returned', return_reason = 'wrong WP' WHERE id = $1 RETURNING return_reason",
+      [ID.te(6)],
+    );
+    expect(ok.rows[0].return_reason).toBe("wrong WP");
+    await expect(
+      asBen("INSERT INTO time_entries (person_id, work_date, activity, hours) VALUES ($1, $2, 'x', 1.1)", [
+        PERSONAS.ben.personId,
+        daysAgo(1),
+      ]),
+    ).rejects.toThrow(/quarter_hours/);
+    const e = await h.as("hana").post("/api/grants/time-entries", {
+      work_date: daysAgo(1),
+      work_package_id: WP3,
+      activity: "Contract",
+      hours: 1,
+      submit: true,
+    });
+    await h.as("ben").post(`/api/grants/time-entries/${e.json().id}/decision`, {
+      decision: "return",
+      reason: "Book it on the legal WP",
+    });
+    const week = (await h.as("hana").get(`/api/grants/timesheet?from=${daysAgo(1)}&to=${daysAgo(1)}`)).json();
+    expect(week.entries.find((x: { id: string }) => x.id === e.json().id)).toMatchObject({
+      status: "returned",
+      return_reason: "Book it on the legal WP",
+    });
+  });
+
+  it("refuses to move a personnel cost record to another entity instead of ignoring the change", async () => {
+    const c = await h.db.app.connect();
+    try {
+      await c.query("BEGIN");
+      await c.query(
+        "SELECT set_config('app.person_id', $1, true), set_config('app.roles', 'Staff,PeopleOps', true), set_config('app.entity', 'DE', true)",
+        [PERSONAS.eva.personId],
+      );
+      await expect(
+        c.query("UPDATE salary_costs SET entity = 'US' WHERE person_id = $1 AND year = 2026", [
+          PERSONAS.ana.personId,
+        ]),
+      ).rejects.toThrow(/cannot change/);
+    } finally {
+      await c.query("ROLLBACK");
+      c.release();
+    }
+  });
+
   it("holds the daily limit, also when entries arrive at the same moment", async () => {
     const day = daysAgo(3);
     const tries = await Promise.all(

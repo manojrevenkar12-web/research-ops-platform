@@ -1,0 +1,106 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  ROP_DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+
+jobs:
+  check:
+    name: lint, types, generated files
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec biome check .
+      - run: pnpm typecheck
+      - run: pnpm generate --check
+      - run: pnpm exec tsx scripts/build.ts
+
+  test:
+    name: tests, access proof, handover gate
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: postgres }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-16
+      - run: pnpm install --frozen-lockfile
+      - name: Unit, API, job, infrastructure and access tests (with policy mutants)
+        run: pnpm test
+      - name: Access proof
+        run: pnpm proof
+      - name: Handover gate for every app
+        run: pnpm handover
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: reports, path: reports/ }
+
+  web:
+    name: console (unit, build, end-to-end with axe)
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: postgres }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      ROP_DATABASE_URL: postgres://postgres:postgres@localhost:5432/rop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:web
+      - run: PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE rop"
+      - run: pnpm migrate && pnpm seed && pnpm job cost-snapshot
+      - run: pnpm --filter @rop/web build
+      - run: pnpm --filter @rop/web exec playwright install --with-deps chromium
+      - run: pnpm e2e
+        env: { CI: "true" }
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: playwright, path: apps/web/test-results/ }
+
+  infra:
+    name: OpenTofu fmt and validate
+    runs-on: ubuntu-24.04
+    defaults:
+      run: { working-directory: infra }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with: { tofu_version: 1.10.6 }
+      - run: tofu fmt -check -recursive
+      - run: tofu init -backend=false -input=false
+      - run: tofu validate
+
+  image:
+    name: API container image
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t research-ops-api:ci .
+      - name: The image starts and refuses to run without Entra settings
+        run: |
+          docker run --rm -e AUTH_MODE=entra research-ops-api:ci 2>&1 | tee out.txt || true
+          grep -q "ENTRA_TENANT_ID is not set" out.txt

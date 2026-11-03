@@ -134,7 +134,7 @@ tables:
     columns:
       { id: personal, person_id: personal, work_date: personal, work_package_id: personal, grant_id: personal,
         activity: personal, hours: personal, status: personal, approved_by: personal, approved_at: personal,
-        recorded_at: personal, late: personal, note: personal }
+        recorded_at: personal, late: personal, note: personal, return_reason: personal }
     select:
       - { roles: [Staff], where: [{ own: person_id }] }
       - { roles: [Staff], where: [{ member: { of: grant_members, on: { grant_id: grant_id }, roles: [lead] } }] }

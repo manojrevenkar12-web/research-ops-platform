@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-03T11:59:13.108Z",
- "inputs": "92c24db9db69dc65",
- "seconds": 36.4,
+ "generated_at": "2026-11-03T12:27:21.371Z",
+ "inputs": "16105f7a273a5f7e",
+ "seconds": 40.2,
  "summary": {
   "principals": 13,
   "tables": 16,
@@ -1732,7 +1732,7 @@
    "table": "salary_costs",
    "description": "check loses same_entity: \"entity\"",
    "verdict": "equivalent",
-   "reason": "The entity of a salary record is fixed when it is created (salary_costs_entity trigger keeps OLD.entity on update), so a row that passed the USING's same-entity test still passes it as the new row.\n"
+   "reason": "The entity of a salary record is fixed when it is created (the salary_costs_entity trigger refuses any change to it), so a row that passed the USING's same-entity test still passes it as the new row.\n"
   },
   {
    "id": "salary_costs.update[1].using[1]:drop",

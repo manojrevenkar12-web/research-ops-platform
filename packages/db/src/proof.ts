@@ -233,7 +233,7 @@ function updateChanges(table: string): Row[] {
       return [
         { status: "submitted" },
         { status: "approved" },
-        { status: "returned" },
+        { status: "returned", return_reason: "split by work package" },
         { status: "draft" },
         { activity: "edited" },
       ];

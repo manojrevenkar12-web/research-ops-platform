@@ -1,6 +1,7 @@
 // Everything generated from config: the SQL policies, the who-can-see document, the Entra app roles and
 // Azure alert rules for infra/, and the OpenAPI document.
 import { accessModel, appRolesTfvars, type Predicate, policiesSql } from "@rop/access";
+import { FIXTURE, PERSONAS, TABLE_ORDER } from "@rop/db";
 import { alertsConfig, appsConfig, platformConfig } from "@rop/platform";
 import { openApiDocument } from "./openapi";
 
@@ -101,11 +102,55 @@ function alertsTfvars() {
   };
 }
 
+function fixtureDoc(): string {
+  const out = [
+    "# The fixture: people and data used by tests, the access proof and the demo",
+    "",
+    "Generated from `packages/db/src/fixtures.ts` by `pnpm generate`. Do not edit.",
+    "",
+    "## People",
+    "",
+    "| Key | Name | Entity | Team | Roles | Person id |",
+    "|---|---|---|---|---|---|",
+    ...Object.values(PERSONAS).map(
+      (p) => `| ${p.key} | ${p.name} | ${p.entity} | ${p.team} | ${p.roles.join(", ")} | \`${p.personId}\` |`,
+    ),
+    "",
+    "Service principals (scheduled jobs): " +
+      Object.entries(accessModel().service_principals)
+        .map(([k, v]) => `${k} (${v.roles.join(", ")})`)
+        .join("; ") +
+      ".",
+    "",
+  ];
+  const name = new Map(Object.values(PERSONAS).map((p) => [p.personId, p.key]));
+  const cell = (v: unknown) => {
+    if (v === null || v === undefined) return "";
+    const s = typeof v === "object" ? JSON.stringify(v) : String(v);
+    return name.has(s)
+      ? `${name.get(s)} (\`${s}\`)`
+      : s.includes("-4000-8000-")
+        ? `\`${s}\``
+        : s.replaceAll("|", "/");
+  };
+  for (const table of TABLE_ORDER) {
+    if (table === "people") continue;
+    const rows = (FIXTURE as Record<string, Record<string, unknown>[]>)[table] ?? [];
+    if (!rows.length) continue;
+    const cols = Object.keys(rows[0]!);
+    out.push(`## ${table}`, "", `| ${cols.join(" | ")} |`, `|${cols.map(() => "---").join("|")}|`);
+    for (const r of rows) out.push(`| ${cols.map((c) => cell(r[c])).join(" | ")} |`);
+    out.push("");
+  }
+  return out.join("\n");
+}
+
 export async function generatedFiles(): Promise<Record<string, string>> {
   const json = (x: unknown) => `${JSON.stringify(x, null, 2)}\n`;
   return {
     "packages/db/generated/policies.sql": policiesSql(accessModel(), platformConfig().database.runtime_role),
     "docs/ACCESS.md": accessDoc(),
+    "docs/FIXTURE.md": fixtureDoc(),
     "infra/app_roles.auto.tfvars.json": json(appRolesTfvars(accessModel())),
     "infra/alerts.auto.tfvars.json": json(alertsTfvars()),
     "docs/openapi.json": json(await openApiDocument()),

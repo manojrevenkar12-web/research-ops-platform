@@ -127,7 +127,7 @@ Part of the `grants` app.
 - **Change**: Staff when it is not their own (`person_id`) and `status` is submitted and they are a lead in `grant_members` for this row; the changed row must satisfy: it is not their own (`person_id`) and `status` is approved or returned and they are a lead in `grant_members` for this row.
 - **Delete**: Staff when it is their own (`person_id`) and `status` is draft.
 
-Columns: personal: id, person_id, work_date, work_package_id, grant_id, activity, hours, status, approved_by, approved_at, recorded_at, late, note.
+Columns: personal: id, person_id, work_date, work_package_id, grant_id, activity, hours, status, approved_by, approved_at, recorded_at, late, note, return_reason.
 
 ### salary_costs
 

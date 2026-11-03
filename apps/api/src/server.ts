@@ -4,7 +4,7 @@ import { type AuthError, bearer, type DevIssuer, type Verifier } from "@rop/auth
 import { asPrincipal, knownRoles, PERSONAS } from "@rop/db";
 import type { Telemetry } from "@rop/observability";
 import { AppError, platformConfig } from "@rop/platform";
-import Fastify, { type FastifyInstance } from "fastify";
+import Fastify, { type FastifyBaseLogger, type FastifyInstance } from "fastify";
 import type pg from "pg";
 import type { Logger } from "pino";
 import { grantsRoutes } from "./features/grants";
@@ -65,7 +65,7 @@ async function principalFor(
 export async function buildServer(opts: ServerOptions): Promise<FastifyInstance> {
   const cfg = platformConfig();
   const app = Fastify({
-    logger: opts.logger ?? false,
+    ...(opts.logger ? { loggerInstance: opts.logger as unknown as FastifyBaseLogger } : { logger: false }),
     bodyLimit: cfg.api.body_limit_bytes,
     requestTimeout: cfg.api.request_timeout_ms,
     genReqId: (req) => {

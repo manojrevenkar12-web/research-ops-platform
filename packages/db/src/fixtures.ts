@@ -429,6 +429,7 @@ export const FIXTURE = {
       approved_by: null,
       approved_at: null,
       late: false,
+      return_reason: "Please split by work package",
     },
     {
       id: ID.te(8),
