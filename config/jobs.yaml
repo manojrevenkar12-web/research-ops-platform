@@ -1,0 +1,14 @@
+# Scheduled jobs. Schedules are NCRONTAB (Azure Functions timer triggers, six fields, UTC).
+
+jobs:
+  cost-snapshot:
+    schedule: "0 30 2 * * *"         # nightly: refresh the figures of every open month that has ended
+    principal: cost-snapshot
+  reminders:
+    schedule: "0 0 7 * * 1"          # Monday morning: remind people with old unsubmitted hours
+    principal: reminders
+  dispatcher:
+    schedule: "0 */5 * * * *"        # every five minutes: deliver queued notifications
+    principal: dispatcher
+    batch_size: 50
+    max_attempts: 5

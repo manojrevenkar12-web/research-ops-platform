@@ -32,7 +32,7 @@ data_classes:
 # Identities that are not people: scheduled jobs run as these principals, with these roles only.
 service_principals:
   cost-snapshot: { roles: [Staff, Finance], entity: DE }
-  reminders: { roles: [Staff], entity: DE }
+  reminders: { roles: [Platform], entity: DE }
   dispatcher: { roles: [Platform], entity: DE }
 
 tables:
@@ -205,11 +205,11 @@ tables:
 
   outbox:
     owner: software
-    columns: { id: internal, topic: internal, payload: personal, created_at: internal, dispatched_at: internal }
+    columns: { id: internal, topic: internal, payload: personal, created_at: internal, dispatched_at: internal, attempts: internal, last_error: internal }
     select:
       - { roles: [Platform] }
     insert:
-      - { roles: [Staff] }
+      - { roles: [Staff, Platform] }
     update:
       - { roles: [Platform] }
 

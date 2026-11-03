@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/jobs.ts"
   },
   "dependencies": {
     "@rop/platform": "workspace:*",
@@ -12,6 +12,9 @@
     "@rop/observability": "workspace:*",
     "@azure/functions": "4.8.0",
     "@rop/costs": "workspace:*",
-    "@rop/access": "workspace:*"
+    "@rop/access": "workspace:*",
+    "yaml": "2.8.1",
+    "pino": "9.11.0",
+    "pg": "8.16.3"
   }
 }

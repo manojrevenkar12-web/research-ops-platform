@@ -10,6 +10,7 @@
     "@rop/platform": "workspace:*",
     "@rop/access": "workspace:*",
     "pg": "8.16.3",
-    "@rop/costs": "workspace:*"
+    "@rop/costs": "workspace:*",
+    "@azure/identity": "4.12.0"
   }
 }

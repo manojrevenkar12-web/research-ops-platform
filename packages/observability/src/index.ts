@@ -1,5 +1,6 @@
 // Logs, metrics and traces for every app on the platform. Metric names are declared once in METRICS; the
 // alert definitions (config/alerts.yaml) may only use these, and the handover gate checks that.
+import { AzureMonitorMetricExporter, AzureMonitorTraceExporter } from "@azure/monitor-opentelemetry-exporter";
 import {
   type Attributes,
   type Counter,
@@ -13,12 +14,15 @@ import {
   AggregationTemporality,
   InMemoryMetricExporter,
   MeterProvider,
+  type MetricReader,
   PeriodicExportingMetricReader,
 } from "@opentelemetry/sdk-metrics";
 import {
   BasicTracerProvider,
+  BatchSpanProcessor,
   InMemorySpanExporter,
   SimpleSpanProcessor,
+  type SpanProcessor,
 } from "@opentelemetry/sdk-trace-base";
 import { platformConfig } from "@rop/platform";
 import pino, { type Logger } from "pino";
@@ -71,22 +75,35 @@ export interface Telemetry {
 }
 
 /**
- * In-memory exporters by default (tests, local runs). In Azure the Container App runs the same code with
- * APPLICATIONINSIGHTS_CONNECTION_STRING set; infra/ wires the Azure Monitor OpenTelemetry exporter there.
+ * In-memory exporters always (tests read them); with APPLICATIONINSIGHTS_CONNECTION_STRING set, as infra/
+ * sets it in Azure, traces and metrics also go to Application Insights, where the alert rules read them.
  */
-export function createTelemetry(serviceName = platformConfig().observability.service_name): Telemetry {
+export function createTelemetry(
+  serviceName = platformConfig().observability.service_name,
+  env: NodeJS.ProcessEnv = process.env,
+): Telemetry {
   const resource = resourceFromAttributes({ "service.name": serviceName });
   const spanExporter = new InMemorySpanExporter();
-  const tracerProvider = new BasicTracerProvider({
-    resource,
-    spanProcessors: [new SimpleSpanProcessor(spanExporter)],
-  });
+  const azure = env.APPLICATIONINSIGHTS_CONNECTION_STRING;
+  const spanProcessors: SpanProcessor[] = [new SimpleSpanProcessor(spanExporter)];
+  const readers: MetricReader[] = [];
+  if (azure) {
+    spanProcessors.push(new BatchSpanProcessor(new AzureMonitorTraceExporter({ connectionString: azure })));
+    readers.push(
+      new PeriodicExportingMetricReader({
+        exporter: new AzureMonitorMetricExporter({ connectionString: azure }),
+        exportIntervalMillis: 60_000,
+      }),
+    );
+  }
+  const tracerProvider = new BasicTracerProvider({ resource, spanProcessors });
   const metricExporter = new InMemoryMetricExporter(AggregationTemporality.CUMULATIVE);
   const reader = new PeriodicExportingMetricReader({
     exporter: metricExporter,
     exportIntervalMillis: 60_000,
   });
-  const meterProvider = new MeterProvider({ resource, readers: [reader] });
+  readers.push(reader);
+  const meterProvider = new MeterProvider({ resource, readers });
   const meter = meterProvider.getMeter(serviceName);
   const counters = new Map<string, Counter>();
   const histograms = new Map<string, Histogram>();

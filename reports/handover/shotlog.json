@@ -1,0 +1,72 @@
+{
+ "app": "shotlog",
+ "title": "Shot log and target inventory",
+ "owner": {
+  "team": "Experimental Physics",
+  "contact": "shotlog-owners@example.com"
+ },
+ "pass": true,
+ "checks": [
+  {
+   "name": "owner named",
+   "pass": true,
+   "detail": "Experimental Physics <shotlog-owners@example.com>"
+  },
+  {
+   "name": "runbook sections",
+   "pass": true,
+   "detail": "8 sections in docs/runbooks/shotlog.md"
+  },
+  {
+   "name": "every alert explained in the runbook",
+   "pass": true,
+   "detail": "3 alerts"
+  },
+  {
+   "name": "alerts defined and wired to emitted metrics",
+   "pass": true,
+   "detail": "api_5xx_rate, api_p95_latency, shot_insert_conflicts"
+  },
+  {
+   "name": "every route called by a test",
+   "pass": true,
+   "detail": "11/11 routes"
+  },
+  {
+   "name": "no unfinished-work markers in the app's code",
+   "pass": true,
+   "detail": "none"
+  },
+  {
+   "name": "access proof is current",
+   "pass": true,
+   "detail": "inputs 92c24db9db69dc65"
+  },
+  {
+   "name": "database matches the access model on the app's tables, every policy mutant caught",
+   "pass": true,
+   "detail": "37/37 mutants caught, the rest listed as equivalent with reasons"
+  },
+  {
+   "name": "migrations reversible",
+   "pass": true,
+   "detail": "3 migrations down and up again give the same schema"
+  },
+  {
+   "name": "every column has a data class",
+   "pass": true,
+   "detail": "5 tables"
+  },
+  {
+   "name": "generated files current",
+   "pass": true,
+   "detail": "policies, ACCESS.md, tfvars, openapi.json"
+  },
+  {
+   "name": "API documented",
+   "pass": true,
+   "detail": "8 paths under /api/shotlog in docs/openapi.json"
+  }
+ ],
+ "generated_at": "2026-11-03T11:59:30.472Z"
+}

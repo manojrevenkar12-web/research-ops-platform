@@ -32,9 +32,29 @@ export function withDatabase(url: string, database: string): string {
   return u.toString();
 }
 
-export function createPool(url: string): pg.Pool {
+/** Scope of Entra ID tokens for Azure Database for PostgreSQL. */
+const POSTGRES_TOKEN_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
+
+/**
+ * In Azure (ROP_DB_AUTH=entra) there is no database password: each new connection signs in with a fresh
+ * token of the runtime's managed identity. Locally and in tests the URL carries the password.
+ */
+export function createPool(url: string, env: NodeJS.ProcessEnv = process.env): pg.Pool {
   const cfg = platformConfig().database;
-  const pool = new pg.Pool({ connectionString: url, max: cfg.pool_max });
+  let password: pg.PoolConfig["password"];
+  if (env.ROP_DB_AUTH === "entra") {
+    let credential: { getToken(scope: string): Promise<{ token: string } | null> } | undefined;
+    password = async () => {
+      if (!credential) {
+        const { ManagedIdentityCredential } = await import("@azure/identity");
+        credential = new ManagedIdentityCredential({ clientId: env.AZURE_CLIENT_ID ?? "" });
+      }
+      const t = await credential.getToken(POSTGRES_TOKEN_SCOPE);
+      if (!t) throw new Error("no database token from the managed identity");
+      return t.token;
+    };
+  }
+  const pool = new pg.Pool({ connectionString: url, max: cfg.pool_max, ...(password ? { password } : {}) });
   // An idle client can fail (a database restart); the pool replaces it, the process must not crash.
   pool.on("error", () => {});
   return pool;

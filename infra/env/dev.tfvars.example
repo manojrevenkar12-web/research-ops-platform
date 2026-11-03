@@ -1,0 +1,5 @@
+environment                    = "dev"
+tenant_id                      = "00000000-0000-0000-0000-000000000000"
+api_image                      = "ghcr.io/example/research-ops-api@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+postgres_admin_group_object_id = "00000000-0000-0000-0000-000000000000"
+alert_email                    = "software-oncall@example.com"

@@ -78,6 +78,8 @@ CREATE TABLE public.outbox (
   topic text NOT NULL,
   payload jsonb NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now(),
-  dispatched_at timestamptz
+  dispatched_at timestamptz,
+  attempts integer NOT NULL DEFAULT 0,
+  last_error text
 );
 CREATE INDEX outbox_pending ON public.outbox (id) WHERE dispatched_at IS NULL;

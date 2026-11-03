@@ -1,0 +1,1899 @@
+{
+ "generated_at": "2026-11-03T11:59:13.108Z",
+ "inputs": "92c24db9db69dc65",
+ "seconds": 36.4,
+ "summary": {
+  "principals": 13,
+  "tables": 16,
+  "attempts": 5057,
+  "mismatches": 0,
+  "inconclusive": 32,
+  "mutants": 110,
+  "caught": 108,
+  "equivalent": 2,
+  "survived": 0,
+  "stale": 0
+ },
+ "by_table": {
+  "people": {
+   "attempts": 429,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 1,
+   "caught": 1,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "campaigns": {
+   "attempts": 572,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 15,
+   "caught": 15,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "campaign_members": {
+   "attempts": 273,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 7,
+   "caught": 7,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "shots": {
+   "attempts": 338,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 8,
+   "caught": 8,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "targets": {
+   "attempts": 364,
+   "mismatches": 0,
+   "inconclusive": 16,
+   "mutants": 6,
+   "caught": 6,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "target_events": {
+   "attempts": 78,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 1,
+   "caught": 1,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "grants": {
+   "attempts": 117,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 5,
+   "caught": 5,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "work_packages": {
+   "attempts": 104,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 3,
+   "caught": 3,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "grant_members": {
+   "attempts": 234,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 5,
+   "caught": 5,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "time_entries": {
+   "attempts": 1599,
+   "mismatches": 0,
+   "inconclusive": 2,
+   "mutants": 24,
+   "caught": 23,
+   "equivalent": 1,
+   "survived": 0
+  },
+  "salary_costs": {
+   "attempts": 325,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 13,
+   "caught": 12,
+   "equivalent": 1,
+   "survived": 0
+  },
+  "cost_periods": {
+   "attempts": 156,
+   "mismatches": 0,
+   "inconclusive": 8,
+   "mutants": 5,
+   "caught": 5,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "grant_cost_snapshots": {
+   "attempts": 156,
+   "mismatches": 0,
+   "inconclusive": 6,
+   "mutants": 9,
+   "caught": 9,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "audit_events": {
+   "attempts": 78,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 2,
+   "caught": 2,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "outbox": {
+   "attempts": 78,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 5,
+   "caught": 5,
+   "equivalent": 0,
+   "survived": 0
+  },
+  "settings": {
+   "attempts": 156,
+   "mismatches": 0,
+   "inconclusive": 0,
+   "mutants": 1,
+   "caught": 1,
+   "equivalent": 0,
+   "survived": 0
+  }
+ },
+ "visibility": [
+  {
+   "principal": "Ana Weber",
+   "roles": [
+    "Staff",
+    "Scientist",
+    "RestrictedTechnical"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 5,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 6,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 12,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Ben Okafor",
+   "roles": [
+    "Staff",
+    "Scientist"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 3,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 3,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 7,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Cleo Martin",
+   "roles": [
+    "Staff",
+    "Scientist",
+    "RestrictedTechnical"
+   ],
+   "entity": "US",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 5,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 6,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 2,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Dan Fischer",
+   "roles": [
+    "Staff",
+    "Finance"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 16,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 5,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 3,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 1,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Eva Schulz",
+   "roles": [
+    "Staff",
+    "PeopleOps"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 0,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 5,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Finn Carter",
+   "roles": [
+    "Staff",
+    "PeopleOps"
+   ],
+   "entity": "US",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 0,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 2,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Gus Lehmann",
+   "roles": [
+    "Staff",
+    "Executive"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 1,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 2,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Hana Yilmaz",
+   "roles": [
+    "Staff"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 1,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 1,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Ivo Petrov",
+   "roles": [
+    "Staff",
+    "Finance"
+   ],
+   "entity": "US",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 16,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 2,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 3,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 1,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "Jan Becker",
+   "roles": [
+    "Staff",
+    "Scientist"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 3,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 3,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 2,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "service:cost-snapshot",
+   "roles": [
+    "Staff",
+    "Finance"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 10,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 8,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 2,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 2,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 8,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 16,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 5,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 3,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 3,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 1,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 0,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 3,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "service:reminders",
+   "roles": [
+    "Platform"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 0,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 0,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 0,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 0,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 0,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 0,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 0,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 0,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 0,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 1,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 0,
+     "rows": 3
+    }
+   }
+  },
+  {
+   "principal": "service:dispatcher",
+   "roles": [
+    "Platform"
+   ],
+   "entity": "DE",
+   "tables": {
+    "people": {
+     "visible": 0,
+     "rows": 10
+    },
+    "campaigns": {
+     "visible": 0,
+     "rows": 5
+    },
+    "campaign_members": {
+     "visible": 0,
+     "rows": 8
+    },
+    "shots": {
+     "visible": 0,
+     "rows": 6
+    },
+    "targets": {
+     "visible": 0,
+     "rows": 8
+    },
+    "target_events": {
+     "visible": 0,
+     "rows": 2
+    },
+    "grants": {
+     "visible": 0,
+     "rows": 2
+    },
+    "work_packages": {
+     "visible": 0,
+     "rows": 3
+    },
+    "grant_members": {
+     "visible": 0,
+     "rows": 8
+    },
+    "time_entries": {
+     "visible": 0,
+     "rows": 16
+    },
+    "salary_costs": {
+     "visible": 0,
+     "rows": 7
+    },
+    "cost_periods": {
+     "visible": 0,
+     "rows": 3
+    },
+    "grant_cost_snapshots": {
+     "visible": 0,
+     "rows": 3
+    },
+    "audit_events": {
+     "visible": 0,
+     "rows": 1
+    },
+    "outbox": {
+     "visible": 1,
+     "rows": 1
+    },
+    "settings": {
+     "visible": 0,
+     "rows": 3
+    }
+   }
+  }
+ ],
+ "mismatches": [],
+ "mutants": [
+  {
+   "id": "people.select[1]:drop-rule",
+   "table": "people",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000100000001: expected visible, got hidden"
+  },
+  {
+   "id": "campaigns.select[1]:drop-rule",
+   "table": "campaigns",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000300000002: expected visible, got hidden"
+  },
+  {
+   "id": "campaigns.select[1]:roles-to-staff",
+   "table": "campaigns",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000300000002: expected hidden, got visible"
+  },
+  {
+   "id": "campaigns.select[1].where[1]:drop",
+   "table": "campaigns",
+   "description": "where loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor select 00000000-0000-4000-8000-000300000001: expected hidden, got visible"
+  },
+  {
+   "id": "campaigns.select[2]:drop-rule",
+   "table": "campaigns",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Hana Yilmaz select 00000000-0000-4000-8000-000300000004: expected visible, got hidden"
+  },
+  {
+   "id": "campaigns.select[2].where[1]:drop",
+   "table": "campaigns",
+   "description": "where loses own: \"lead_id\"",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000300000002: expected hidden, got visible"
+  },
+  {
+   "id": "campaigns.select[2].where[2]:drop",
+   "table": "campaigns",
+   "description": "where loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor select 00000000-0000-4000-8000-000300000005: expected hidden, got visible"
+  },
+  {
+   "id": "campaigns.insert[1]:drop-rule",
+   "table": "campaigns",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"code\":\"NEW-I-0001\",\"title\":\"t\",\"facility\":\"f\",\"entity\":\"DE\",\"classification\":\"internal\",\"lead_id\":\"00000000-0000-4000-8000-000100000001\",\"starts_on\":\"2026-11-01\"}: expected allowed, got denied"
+  },
+  {
+   "id": "campaigns.insert[1]:roles-to-staff",
+   "table": "campaigns",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"code\":\"NEW-I-0004\",\"title\":\"t\",\"facility\":\"f\",\"entity\":\"DE\",\"classification\":\"internal\",\"lead_id\":\"00000000-0000-4000-8000-000100000004\",\"starts_on\":\"2026-11-01\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaigns.insert[1].check[1]:drop",
+   "table": "campaigns",
+   "description": "check loses own: \"lead_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"code\":\"NEW-O-0001\",\"title\":\"t\",\"facility\":\"f\",\"entity\":\"DE\",\"classification\":\"internal\",\"lead_id\":\"00000000-0000-4000-8000-000100000002\",\"starts_on\":\"2026-11-01\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaigns.insert[1].check[2]:drop",
+   "table": "campaigns",
+   "description": "check loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor insert {\"code\":\"NEW-R-0002\",\"title\":\"t\",\"facility\":\"f\",\"entity\":\"DE\",\"classification\":\"restricted\",\"lead_id\":\"00000000-0000-4000-8000-000100000002\",\"starts_on\":\"2026-11-01\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaigns.update[1]:drop-rule",
+   "table": "campaigns",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000300000001 {\"title\":\"renamed\"}: expected allowed, got denied"
+  },
+  {
+   "id": "campaigns.update[1]:roles-to-staff",
+   "table": "campaigns",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Hana Yilmaz update 00000000-0000-4000-8000-000300000004 {\"title\":\"renamed\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "campaigns.update[1].check[1]:drop",
+   "table": "campaigns",
+   "description": "check loses own: \"lead_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000300000001 {\"lead_id\":\"00000000-0000-4000-8000-000100000002\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaigns.update[1].check[2]:drop",
+   "table": "campaigns",
+   "description": "check loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor update ALL {\"title\":\"renamed\"}: expected denied, got allowed:2"
+  },
+  {
+   "id": "campaigns.update[1].using[1]:drop",
+   "table": "campaigns",
+   "description": "using loses own: \"lead_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000300000002 {\"title\":\"renamed\"}: expected skipped, got denied"
+  },
+  {
+   "id": "campaign_members.select[1]:drop-rule",
+   "table": "campaign_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000300000001/00000000-0000-4000-8000-000100000001: expected visible, got hidden"
+  },
+  {
+   "id": "campaign_members.insert[1]:drop-rule",
+   "table": "campaign_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000001\",\"person_id\":\"00000000-0000-4000-8000-000100000007\",\"role\":\"observer\"}: expected allowed, got denied"
+  },
+  {
+   "id": "campaign_members.insert[1]:roles-to-staff",
+   "table": "campaign_members",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Hana Yilmaz insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000004\",\"person_id\":\"00000000-0000-4000-8000-000100000007\",\"role\":\"observer\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaign_members.insert[1].check[1]:drop",
+   "table": "campaign_members",
+   "description": "check loses member: {\"of\":\"campaigns\",\"on\":{\"id\":\"campaign_id\"},\"person\":\"lead_id\"}",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000002\",\"person_id\":\"00000000-0000-4000-8000-000100000007\",\"role\":\"observer\"}: expected denied, got allowed"
+  },
+  {
+   "id": "campaign_members.delete[1]:drop-rule",
+   "table": "campaign_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected allowed:3, got denied"
+  },
+  {
+   "id": "campaign_members.delete[1]:roles-to-staff",
+   "table": "campaign_members",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Hana Yilmaz delete ALL: expected skipped, got allowed:2"
+  },
+  {
+   "id": "campaign_members.delete[1].where[1]:drop",
+   "table": "campaign_members",
+   "description": "where loses member: {\"of\":\"campaigns\",\"on\":{\"id\":\"campaign_id\"},\"person\":\"lead_id\"}",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected allowed:3, got allowed:8"
+  },
+  {
+   "id": "shots.select[1]:drop-rule",
+   "table": "shots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000500000001: expected visible, got hidden"
+  },
+  {
+   "id": "shots.select[1]:roles-to-staff",
+   "table": "shots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000500000004: expected hidden, got visible"
+  },
+  {
+   "id": "shots.select[1].where[1]:drop",
+   "table": "shots",
+   "description": "where loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor select 00000000-0000-4000-8000-000500000001: expected hidden, got visible"
+  },
+  {
+   "id": "shots.insert[1]:drop-rule",
+   "table": "shots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000001\",\"shot_no\":90,\"fired_at\":\"2026-11-01T10:00:00Z\",\"outcome\":\"nominal\",\"classification\":\"restricted\",\"logged_by\":\"00000000-0000-4000-8000-000100000001\"}: expected allowed, got denied"
+  },
+  {
+   "id": "shots.insert[1]:roles-to-staff",
+   "table": "shots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Hana Yilmaz insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000004\",\"shot_no\":90,\"fired_at\":\"2026-11-01T10:00:00Z\",\"outcome\":\"nominal\",\"classification\":\"internal\",\"logged_by\":\"00000000-0000-4000-8000-000100000008\"}: expected denied, got allowed"
+  },
+  {
+   "id": "shots.insert[1].check[1]:drop",
+   "table": "shots",
+   "description": "check loses own: \"logged_by\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000002\",\"shot_no\":92,\"fired_at\":\"2026-11-01T10:00:00Z\",\"outcome\":\"nominal\",\"classification\":\"internal\",\"logged_by\":\"00000000-0000-4000-8000-000100000002\"}: expected denied, got allowed"
+  },
+  {
+   "id": "shots.insert[1].check[2]:drop",
+   "table": "shots",
+   "description": "check loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000002\",\"shot_no\":91,\"fired_at\":\"2026-11-01T10:00:00Z\",\"outcome\":\"nominal\",\"classification\":\"restricted\",\"logged_by\":\"00000000-0000-4000-8000-000100000002\"}: expected denied, got allowed"
+  },
+  {
+   "id": "shots.insert[1].check[3]:drop",
+   "table": "shots",
+   "description": "check loses member: {\"of\":\"campaign_members\",\"on\":{\"campaign_id\":\"campaign_id\"},\"roles\":[\"lead\",\"operator\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"campaign_id\":\"00000000-0000-4000-8000-000300000003\",\"shot_no\":90,\"fired_at\":\"2026-11-01T10:00:00Z\",\"outcome\":\"nominal\",\"classification\":\"internal\",\"logged_by\":\"00000000-0000-4000-8000-000100000001\"}: expected denied, got allowed"
+  },
+  {
+   "id": "targets.select[1]:drop-rule",
+   "table": "targets",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000400000001: expected visible, got hidden"
+  },
+  {
+   "id": "targets.insert[1]:drop-rule",
+   "table": "targets",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"serial\":\"NEW-F-0001\",\"batch\":\"B\",\"design\":\"D\",\"status\":\"fabricated\"}: expected allowed, got denied"
+  },
+  {
+   "id": "targets.insert[1]:roles-to-staff",
+   "table": "targets",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"serial\":\"NEW-F-0004\",\"batch\":\"B\",\"design\":\"D\",\"status\":\"fabricated\"}: expected denied, got allowed"
+  },
+  {
+   "id": "targets.insert[1].check[1]:drop",
+   "table": "targets",
+   "description": "check loses in: {\"status\":[\"fabricated\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"serial\":\"NEW-C-0001\",\"batch\":\"B\",\"design\":\"D\",\"status\":\"characterized\"}: expected denied, got allowed"
+  },
+  {
+   "id": "targets.update[1]:drop-rule",
+   "table": "targets",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000400000001 {\"characterization\":\"{\\\"note\\\":\\\"x\\\"}\"}: expected allowed, got denied"
+  },
+  {
+   "id": "targets.update[1]:roles-to-staff",
+   "table": "targets",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Dan Fischer update 00000000-0000-4000-8000-000400000002 {\"characterization\":\"{\\\"note\\\":\\\"x\\\"}\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "target_events.select[1]:drop-rule",
+   "table": "target_events",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 1: expected visible, got hidden"
+  },
+  {
+   "id": "grants.select[1]:drop-rule",
+   "table": "grants",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000600000001: expected visible, got hidden"
+  },
+  {
+   "id": "grants.insert[1]:drop-rule",
+   "table": "grants",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"code\":\"G-0004\",\"title\":\"t\",\"funder\":\"f\",\"method\":\"eu_daily\",\"entity\":\"DE\",\"starts_on\":\"2026-01-01\",\"ends_on\":\"2026-12-31\",\"funding_rate\":0.5,\"indirect_rate\":0.25}: expected allowed, got denied"
+  },
+  {
+   "id": "grants.insert[1]:roles-to-staff",
+   "table": "grants",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"code\":\"G-0001\",\"title\":\"t\",\"funder\":\"f\",\"method\":\"eu_daily\",\"entity\":\"DE\",\"starts_on\":\"2026-01-01\",\"ends_on\":\"2026-12-31\",\"funding_rate\":0.5,\"indirect_rate\":0.25}: expected denied, got allowed"
+  },
+  {
+   "id": "grants.update[1]:drop-rule",
+   "table": "grants",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000600000001 {\"title\":\"renamed\"}: expected skipped, got denied"
+  },
+  {
+   "id": "grants.update[1]:roles-to-staff",
+   "table": "grants",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000600000001 {\"title\":\"renamed\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "work_packages.select[1]:drop-rule",
+   "table": "work_packages",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000700000001: expected visible, got hidden"
+  },
+  {
+   "id": "work_packages.insert[1]:drop-rule",
+   "table": "work_packages",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"code\":\"WP-0004\",\"title\":\"t\"}: expected allowed, got denied"
+  },
+  {
+   "id": "work_packages.insert[1]:roles-to-staff",
+   "table": "work_packages",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"code\":\"WP-0001\",\"title\":\"t\"}: expected denied, got allowed"
+  },
+  {
+   "id": "grant_members.select[1]:drop-rule",
+   "table": "grant_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000600000001/00000000-0000-4000-8000-000100000001: expected visible, got hidden"
+  },
+  {
+   "id": "grant_members.insert[1]:drop-rule",
+   "table": "grant_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"person_id\":\"00000000-0000-4000-8000-000100000003\",\"role\":\"member\"}: expected allowed, got denied"
+  },
+  {
+   "id": "grant_members.insert[1]:roles-to-staff",
+   "table": "grant_members",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"person_id\":\"00000000-0000-4000-8000-000100000003\",\"role\":\"member\"}: expected denied, got allowed"
+  },
+  {
+   "id": "grant_members.delete[1]:drop-rule",
+   "table": "grant_members",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected skipped, got denied"
+  },
+  {
+   "id": "grant_members.delete[1]:roles-to-staff",
+   "table": "grant_members",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected skipped, got allowed:8"
+  },
+  {
+   "id": "time_entries.select[1]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000800000006: expected visible, got hidden"
+  },
+  {
+   "id": "time_entries.select[1].where[1]:drop",
+   "table": "time_entries",
+   "description": "where loses own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000800000007: expected hidden, got visible"
+  },
+  {
+   "id": "time_entries.select[2]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000800000002: expected visible, got hidden"
+  },
+  {
+   "id": "time_entries.select[2].where[1]:drop",
+   "table": "time_entries",
+   "description": "where loses member: {\"of\":\"grant_members\",\"on\":{\"grant_id\":\"grant_id\"},\"roles\":[\"lead\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000800000007: expected hidden, got visible"
+  },
+  {
+   "id": "time_entries.select[3]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000800000001: expected visible, got hidden"
+  },
+  {
+   "id": "time_entries.select[3]:roles-to-staff",
+   "table": "time_entries",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000800000007: expected hidden, got visible"
+  },
+  {
+   "id": "time_entries.insert[1]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"person_id\":\"00000000-0000-4000-8000-000100000001\",\"work_date\":\"2026-10-21\",\"activity\":\"a\",\"hours\":1,\"status\":\"draft\"}: expected allowed, got denied"
+  },
+  {
+   "id": "time_entries.insert[1].check[1]:drop",
+   "table": "time_entries",
+   "description": "check loses own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"person_id\":\"00000000-0000-4000-8000-000100000002\",\"work_date\":\"2026-10-21\",\"activity\":\"a\",\"hours\":1,\"status\":\"draft\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.insert[1].check[2]:drop",
+   "table": "time_entries",
+   "description": "check loses in: {\"status\":[\"draft\",\"submitted\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"person_id\":\"00000000-0000-4000-8000-000100000001\",\"work_date\":\"2026-10-21\",\"activity\":\"a\",\"hours\":1,\"status\":\"approved\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.update[1]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-00080000000c {\"status\":\"submitted\"}: expected allowed, got skipped"
+  },
+  {
+   "id": "time_entries.update[1].check[1]:drop",
+   "table": "time_entries",
+   "description": "check loses own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000004 {\"status\":\"submitted\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.update[1].check[2]:drop",
+   "table": "time_entries",
+   "description": "check loses in: {\"status\":[\"draft\",\"submitted\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-00080000000c {\"status\":\"approved\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.update[1].using[1]:drop",
+   "table": "time_entries",
+   "description": "using loses own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000005 {\"status\":\"submitted\"}: expected skipped, got denied"
+  },
+  {
+   "id": "time_entries.update[1].using[2]:drop",
+   "table": "time_entries",
+   "description": "using loses in: {\"status\":[\"draft\",\"returned\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000006 {\"status\":\"submitted\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "time_entries.update[2]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000004 {\"status\":\"submitted\"}: expected denied, got skipped"
+  },
+  {
+   "id": "time_entries.update[2].check[1]:drop",
+   "table": "time_entries",
+   "description": "check loses not_own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-00080000000c {\"status\":\"approved\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.update[2].check[2]:drop",
+   "table": "time_entries",
+   "description": "check loses in: {\"status\":[\"approved\",\"returned\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000004 {\"status\":\"submitted\"}: expected denied, got allowed"
+  },
+  {
+   "id": "time_entries.update[2].check[3]:drop",
+   "table": "time_entries",
+   "description": "check loses member: {\"of\":\"grant_members\",\"on\":{\"grant_id\":\"grant_id\"},\"roles\":[\"lead\"]}",
+   "verdict": "equivalent",
+   "reason": "The lead's USING already requires lead membership of the entry's grant, and a lead cannot change the entry's work package (time_entries_before trigger), so the grant of the new row is the grant of the old row and the CHECK repeats the USING.\n"
+  },
+  {
+   "id": "time_entries.update[2].using[1]:drop",
+   "table": "time_entries",
+   "description": "using loses not_own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor update 00000000-0000-4000-8000-000800000008 {\"status\":\"submitted\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "time_entries.update[2].using[2]:drop",
+   "table": "time_entries",
+   "description": "using loses in: {\"status\":[\"submitted\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000800000005 {\"status\":\"submitted\"}: expected skipped, got denied"
+  },
+  {
+   "id": "time_entries.update[2].using[3]:drop",
+   "table": "time_entries",
+   "description": "using loses member: {\"of\":\"grant_members\",\"on\":{\"grant_id\":\"grant_id\"},\"roles\":[\"lead\"]}",
+   "verdict": "caught",
+   "evidence": "Cleo Martin update ALL {\"status\":\"submitted\"}: expected allowed:1, got denied"
+  },
+  {
+   "id": "time_entries.delete[1]:drop-rule",
+   "table": "time_entries",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected allowed:1, got denied"
+  },
+  {
+   "id": "time_entries.delete[1].where[1]:drop",
+   "table": "time_entries",
+   "description": "where loses own: \"person_id\"",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete ALL: expected allowed:1, got allowed:3"
+  },
+  {
+   "id": "time_entries.delete[1].where[2]:drop",
+   "table": "time_entries",
+   "description": "where loses in: {\"status\":[\"draft\"]}",
+   "verdict": "caught",
+   "evidence": "Ana Weber delete 00000000-0000-4000-8000-000800000006: expected skipped, got allowed"
+  },
+  {
+   "id": "salary_costs.select[1]:drop-rule",
+   "table": "salary_costs",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Eva Schulz select 00000000-0000-4000-8000-000100000001/2026: expected visible, got hidden"
+  },
+  {
+   "id": "salary_costs.select[1]:roles-to-staff",
+   "table": "salary_costs",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000100000001/2026: expected hidden, got visible"
+  },
+  {
+   "id": "salary_costs.select[1].where[1]:drop",
+   "table": "salary_costs",
+   "description": "where loses same_entity: \"entity\"",
+   "verdict": "caught",
+   "evidence": "Eva Schulz select 00000000-0000-4000-8000-000100000003/2026: expected hidden, got visible"
+  },
+  {
+   "id": "salary_costs.select[2]:drop-rule",
+   "table": "salary_costs",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000100000001/2026: expected visible, got hidden"
+  },
+  {
+   "id": "salary_costs.select[2]:roles-to-staff",
+   "table": "salary_costs",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000100000001/2026: expected hidden, got visible"
+  },
+  {
+   "id": "salary_costs.select[2].where[1]:drop",
+   "table": "salary_costs",
+   "description": "where loses same_entity: \"entity\"",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000100000003/2026: expected hidden, got visible"
+  },
+  {
+   "id": "salary_costs.insert[1]:drop-rule",
+   "table": "salary_costs",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Eva Schulz insert {\"person_id\":\"00000000-0000-4000-8000-000100000008\",\"entity\":\"DE\",\"year\":2027,\"annual_cost_eur\":1,\"contract_hours\":1}: expected allowed, got denied"
+  },
+  {
+   "id": "salary_costs.insert[1]:roles-to-staff",
+   "table": "salary_costs",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"person_id\":\"00000000-0000-4000-8000-000100000008\",\"entity\":\"DE\",\"year\":2027,\"annual_cost_eur\":1,\"contract_hours\":1}: expected denied, got allowed"
+  },
+  {
+   "id": "salary_costs.insert[1].check[1]:drop",
+   "table": "salary_costs",
+   "description": "check loses same_entity: \"entity\"",
+   "verdict": "caught",
+   "evidence": "Eva Schulz insert {\"person_id\":\"00000000-0000-4000-8000-000100000009\",\"entity\":\"US\",\"year\":2027,\"annual_cost_eur\":1,\"contract_hours\":1}: expected denied, got allowed"
+  },
+  {
+   "id": "salary_costs.update[1]:drop-rule",
+   "table": "salary_costs",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000100000001/2026 {\"annual_cost_eur\":1}: expected skipped, got denied"
+  },
+  {
+   "id": "salary_costs.update[1]:roles-to-staff",
+   "table": "salary_costs",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber update ALL {\"annual_cost_eur\":1}: expected skipped, got allowed:5"
+  },
+  {
+   "id": "salary_costs.update[1].check[1]:drop",
+   "table": "salary_costs",
+   "description": "check loses same_entity: \"entity\"",
+   "verdict": "equivalent",
+   "reason": "The entity of a salary record is fixed when it is created (salary_costs_entity trigger keeps OLD.entity on update), so a row that passed the USING's same-entity test still passes it as the new row.\n"
+  },
+  {
+   "id": "salary_costs.update[1].using[1]:drop",
+   "table": "salary_costs",
+   "description": "using loses same_entity: \"entity\"",
+   "verdict": "caught",
+   "evidence": "Eva Schulz update ALL {\"annual_cost_eur\":1}: expected allowed:5, got denied"
+  },
+  {
+   "id": "cost_periods.select[1]:drop-rule",
+   "table": "cost_periods",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000600000001/2026-09: expected visible, got hidden"
+  },
+  {
+   "id": "cost_periods.insert[1]:drop-rule",
+   "table": "cost_periods",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"period\":\"2026-11\",\"status\":\"open\"}: expected allowed, got denied"
+  },
+  {
+   "id": "cost_periods.insert[1]:roles-to-staff",
+   "table": "cost_periods",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"period\":\"2026-11\",\"status\":\"open\"}: expected denied, got allowed"
+  },
+  {
+   "id": "cost_periods.update[1]:drop-rule",
+   "table": "cost_periods",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000600000001/2026-09 {\"status\":\"closed\"}: expected skipped, got denied"
+  },
+  {
+   "id": "cost_periods.update[1]:roles-to-staff",
+   "table": "cost_periods",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000600000001/2026-10 {\"status\":\"closed\"}: expected skipped, got allowed"
+  },
+  {
+   "id": "grant_cost_snapshots.select[1]:drop-rule",
+   "table": "grant_cost_snapshots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 00000000-0000-4000-8000-000600000001/2026-09: expected visible, got hidden"
+  },
+  {
+   "id": "grant_cost_snapshots.select[1]:roles-to-staff",
+   "table": "grant_cost_snapshots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000600000001/2026-09: expected hidden, got visible"
+  },
+  {
+   "id": "grant_cost_snapshots.select[2]:drop-rule",
+   "table": "grant_cost_snapshots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Gus Lehmann select 00000000-0000-4000-8000-000600000001/2026-09: expected visible, got hidden"
+  },
+  {
+   "id": "grant_cost_snapshots.select[2]:roles-to-staff",
+   "table": "grant_cost_snapshots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 00000000-0000-4000-8000-000600000001/2026-09: expected hidden, got visible"
+  },
+  {
+   "id": "grant_cost_snapshots.select[2].where[1]:drop",
+   "table": "grant_cost_snapshots",
+   "description": "where loses at_least: {\"column\":\"contributors\",\"setting\":\"min_group_size\"}",
+   "verdict": "caught",
+   "evidence": "Gus Lehmann select 00000000-0000-4000-8000-000600000002/2026-10: expected hidden, got visible"
+  },
+  {
+   "id": "grant_cost_snapshots.insert[1]:drop-rule",
+   "table": "grant_cost_snapshots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"period\":\"2026-11\",\"direct_eur\":1,\"indirect_eur\":1,\"funded_eur\":1,\"contributors\":3}: expected allowed, got denied"
+  },
+  {
+   "id": "grant_cost_snapshots.insert[1]:roles-to-staff",
+   "table": "grant_cost_snapshots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"grant_id\":\"00000000-0000-4000-8000-000600000002\",\"period\":\"2026-11\",\"direct_eur\":1,\"indirect_eur\":1,\"funded_eur\":1,\"contributors\":3}: expected denied, got allowed"
+  },
+  {
+   "id": "grant_cost_snapshots.update[1]:drop-rule",
+   "table": "grant_cost_snapshots",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 00000000-0000-4000-8000-000600000001/2026-09 {\"funded_eur\":1}: expected skipped, got denied"
+  },
+  {
+   "id": "grant_cost_snapshots.update[1]:roles-to-staff",
+   "table": "grant_cost_snapshots",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Gus Lehmann update 00000000-0000-4000-8000-000600000001/2026-10 {\"funded_eur\":1}: expected skipped, got allowed"
+  },
+  {
+   "id": "audit_events.select[1]:drop-rule",
+   "table": "audit_events",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Dan Fischer select 1: expected visible, got hidden"
+  },
+  {
+   "id": "audit_events.select[1]:roles-to-staff",
+   "table": "audit_events",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 1: expected hidden, got visible"
+  },
+  {
+   "id": "outbox.select[1]:drop-rule",
+   "table": "outbox",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 1 {\"dispatched_at\":\"2026-11-01T00:00:00Z\"}: expected skipped, got denied"
+  },
+  {
+   "id": "outbox.select[1]:roles-to-staff",
+   "table": "outbox",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber select 1: expected hidden, got visible"
+  },
+  {
+   "id": "outbox.insert[1]:drop-rule",
+   "table": "outbox",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber insert {\"topic\":\"x\",\"payload\":\"{}\"}: expected allowed, got denied"
+  },
+  {
+   "id": "outbox.update[1]:drop-rule",
+   "table": "outbox",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber update 1 {\"dispatched_at\":\"2026-11-01T00:00:00Z\"}: expected skipped, got denied"
+  },
+  {
+   "id": "outbox.update[1]:roles-to-staff",
+   "table": "outbox",
+   "description": "roles widened to Staff",
+   "verdict": "caught",
+   "evidence": "Ana Weber update ALL {\"dispatched_at\":\"2026-11-01T00:00:00Z\"}: expected skipped, got allowed:1"
+  },
+  {
+   "id": "settings.select[1]:drop-rule",
+   "table": "settings",
+   "description": "rule removed",
+   "verdict": "caught",
+   "evidence": "Ana Weber select max_hours_per_day: expected visible, got hidden"
+  }
+ ]
+}

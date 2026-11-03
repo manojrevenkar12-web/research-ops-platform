@@ -210,3 +210,16 @@ CREATE TRIGGER cost_periods_audit AFTER INSERT OR UPDATE ON public.cost_periods
   FOR EACH ROW EXECUTE FUNCTION app.audit('grant_id', 'period');
 CREATE TRIGGER grant_cost_snapshots_audit AFTER INSERT OR UPDATE ON public.grant_cost_snapshots
   FOR EACH ROW EXECUTE FUNCTION app.audit('grant_id', 'period');
+
+-- What the reminder job may know: how many old unsubmitted entries each person has, nothing about the hours.
+CREATE FUNCTION app.unsubmitted_summary() RETURNS TABLE (person_id uuid, entries integer, oldest date)
+  LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, public AS $$
+BEGIN
+  IF NOT app.has_role('Platform') THEN
+    RAISE EXCEPTION 'only platform services may read the reminder summary' USING ERRCODE = 'insufficient_privilege';
+  END IF;
+  RETURN QUERY
+    SELECT e.person_id, count(*)::integer, min(e.work_date) FROM public.time_entries e
+     WHERE e.status IN ('draft', 'returned') AND current_date - e.work_date > app.setting_int('contemporaneous_days')
+     GROUP BY e.person_id;
+END $$;

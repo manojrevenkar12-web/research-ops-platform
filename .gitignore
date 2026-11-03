@@ -12,3 +12,4 @@ infra/.terraform/
 infra/*.tfstate*
 /tmp/
 reports/coverage/
+.local/

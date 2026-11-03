@@ -23,7 +23,8 @@
     "handover": "tsx scripts/handover.ts",
     "heldout": "tsx scripts/heldout.ts",
     "build": "tsx scripts/build.ts && pnpm --filter @rop/web build",
-    "check": "scripts/check.sh"
+    "check": "scripts/check.sh",
+    "job": "tsx scripts/job.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
@@ -33,7 +34,8 @@
     "tsx": "4.20.5",
     "typescript": "5.9.2",
     "vitest": "3.2.4",
-    "fast-check": "4.3.0"
+    "fast-check": "4.3.0",
+    "@cdktf/hcl2json": "0.21.0"
   },
   "dependencies": {
     "@rop/platform": "workspace:*",
@@ -44,7 +46,10 @@
     "@rop/api": "workspace:*",
     "@rop/jobs": "workspace:*",
     "pg": "8.16.3",
-    "@rop/costs": "workspace:*"
+    "@rop/costs": "workspace:*",
+    "zod": "4.1.11",
+    "yaml": "2.8.1",
+    "pino": "9.11.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

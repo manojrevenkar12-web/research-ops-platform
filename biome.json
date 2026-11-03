@@ -8,18 +8,44 @@
       "!reports",
       "!**/generated",
       "!infra/.terraform",
+      "!infra/*.auto.tfvars.json",
       "!apps/web/test-results",
       "!apps/web/playwright-report",
       "!heldout"
     ]
   },
-  "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 110 },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 110
+  },
   "linter": {
     "rules": {
       "recommended": true,
-      "style": { "noNonNullAssertion": "off" },
-      "suspicious": { "noExplicitAny": "error" }
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "error"
+      }
     }
   },
-  "javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } }
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["tests/infra/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    }
+  ]
 }

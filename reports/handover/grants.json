@@ -1,0 +1,72 @@
+{
+ "app": "grants",
+ "title": "Grant time and cost reporting",
+ "owner": {
+  "team": "Finance",
+  "contact": "grants-owners@example.com"
+ },
+ "pass": true,
+ "checks": [
+  {
+   "name": "owner named",
+   "pass": true,
+   "detail": "Finance <grants-owners@example.com>"
+  },
+  {
+   "name": "runbook sections",
+   "pass": true,
+   "detail": "8 sections in docs/runbooks/grants.md"
+  },
+  {
+   "name": "every alert explained in the runbook",
+   "pass": true,
+   "detail": "4 alerts"
+  },
+  {
+   "name": "alerts defined and wired to emitted metrics",
+   "pass": true,
+   "detail": "api_5xx_rate, api_p95_latency, cost_snapshot_failed, unsubmitted_hours_backlog"
+  },
+  {
+   "name": "every route called by a test",
+   "pass": true,
+   "detail": "11/11 routes"
+  },
+  {
+   "name": "no unfinished-work markers in the app's code",
+   "pass": true,
+   "detail": "none"
+  },
+  {
+   "name": "access proof is current",
+   "pass": true,
+   "detail": "inputs 92c24db9db69dc65"
+  },
+  {
+   "name": "database matches the access model on the app's tables, every policy mutant caught",
+   "pass": true,
+   "detail": "62/64 mutants caught, the rest listed as equivalent with reasons"
+  },
+  {
+   "name": "migrations reversible",
+   "pass": true,
+   "detail": "3 migrations down and up again give the same schema"
+  },
+  {
+   "name": "every column has a data class",
+   "pass": true,
+   "detail": "7 tables"
+  },
+  {
+   "name": "generated files current",
+   "pass": true,
+   "detail": "policies, ACCESS.md, tfvars, openapi.json"
+  },
+  {
+   "name": "API documented",
+   "pass": true,
+   "detail": "10 paths under /api/grants in docs/openapi.json"
+  }
+ ],
+ "generated_at": "2026-11-03T11:59:30.477Z"
+}

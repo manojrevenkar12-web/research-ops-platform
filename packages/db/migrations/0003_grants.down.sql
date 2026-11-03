@@ -1,3 +1,4 @@
+DROP FUNCTION app.unsubmitted_summary();
 DROP TABLE public.grant_cost_snapshots;
 DROP TABLE public.cost_periods;
 DROP TABLE public.salary_costs;
