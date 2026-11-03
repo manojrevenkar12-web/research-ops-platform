@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-11-03T12:27:21.371Z",
- "inputs": "16105f7a273a5f7e",
- "seconds": 40.2,
+ "generated_at": "2026-11-03T12:47:53.445Z",
+ "inputs": "29d44cfaa99c1dd9",
+ "seconds": 39.1,
  "summary": {
   "principals": 13,
   "tables": 16,
   "attempts": 5057,
   "mismatches": 0,
   "inconclusive": 32,
-  "mutants": 110,
-  "caught": 108,
+  "mutants": 111,
+  "caught": 109,
   "equivalent": 2,
   "survived": 0,
   "stale": 0
@@ -28,8 +28,8 @@
    "attempts": 572,
    "mismatches": 0,
    "inconclusive": 0,
-   "mutants": 15,
-   "caught": 15,
+   "mutants": 16,
+   "caught": 16,
    "equivalent": 0,
    "survived": 0
   },
@@ -1228,7 +1228,7 @@
    "table": "campaigns",
    "description": "check loses cleared: \"classification\"",
    "verdict": "caught",
-   "evidence": "Ben Okafor update ALL {\"title\":\"renamed\"}: expected denied, got allowed:2"
+   "evidence": "Ben Okafor update ALL {\"classification\":\"restricted\"}: expected denied, got allowed:1"
   },
   {
    "id": "campaigns.update[1].using[1]:drop",
@@ -1236,6 +1236,13 @@
    "description": "using loses own: \"lead_id\"",
    "verdict": "caught",
    "evidence": "Ana Weber update 00000000-0000-4000-8000-000300000002 {\"title\":\"renamed\"}: expected skipped, got denied"
+  },
+  {
+   "id": "campaigns.update[1].using[2]:drop",
+   "table": "campaigns",
+   "description": "using loses cleared: \"classification\"",
+   "verdict": "caught",
+   "evidence": "Ben Okafor update ALL {\"title\":\"renamed\"}: expected allowed:1, got denied"
   },
   {
    "id": "campaign_members.select[1]:drop-rule",

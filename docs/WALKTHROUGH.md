@@ -27,7 +27,7 @@ Questions worth asking:
 
 - `packages/access/src/evaluate.ts` is the reference evaluator; read `updateOutcome` and `blindUpdate`.
 - `packages/db/src/proof.ts` runs the matrix; `reports/access/proof.json` is the latest result: about 5,000
-  statements by 13 principals, 0 disagreements, 108 of 110 policy mutants caught, 2 equivalent with reasons
+  statements by 13 principals, 0 disagreements, 109 of 111 policy mutants caught, 2 equivalent with reasons
   (`config/access_equivalent.yaml`).
 - The console's "Who can see what" page shows the same report.
 
@@ -55,4 +55,6 @@ Questions worth asking:
 
 `heldout/blind-1/STUDIED.md`: a separate writer, from the documents only, found that quarter hours, the return
 reason and the entity of a pay record were enforced only by the API, or silently ignored. Fixed in migration
-0004; the set became a regression set and `heldout/blind-2` was written fresh.
+0004; the set became a regression set and `heldout/blind-2` was written fresh. Its writer noticed that a lead
+whose clearance lapsed could declassify their campaign: the model itself allowed it, so the proof could not see
+it (`heldout/blind-2/STUDIED.md`).

@@ -1,7 +1,7 @@
 {
  "set": "blind-1",
  "status": "regression",
- "run_at": "2026-11-03T12:26:27.770Z",
+ "run_at": "2026-11-03T12:47:55.553Z",
  "cost": {
   "cases": 40,
   "passed": 40

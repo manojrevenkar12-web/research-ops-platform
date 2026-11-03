@@ -19,7 +19,7 @@ DO $$ DECLARE p record; BEGIN FOR p IN SELECT policyname FROM pg_policies WHERE 
 CREATE POLICY campaigns__select__1 ON public.campaigns FOR SELECT TO rop_app USING ((app.has_any_role(ARRAY['Scientist']::text[])) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical'))));
 CREATE POLICY campaigns__select__2 ON public.campaigns FOR SELECT TO rop_app USING ((app.has_any_role(ARRAY['Staff']::text[])) AND (campaigns.lead_id = app.person_id()) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical'))));
 CREATE POLICY campaigns__insert__1 ON public.campaigns FOR INSERT TO rop_app WITH CHECK ((app.has_any_role(ARRAY['Scientist']::text[])) AND (campaigns.lead_id = app.person_id()) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical'))));
-CREATE POLICY campaigns__update__1 ON public.campaigns FOR UPDATE TO rop_app USING ((app.has_any_role(ARRAY['Scientist']::text[])) AND (campaigns.lead_id = app.person_id())) WITH CHECK ((app.has_any_role(ARRAY['Scientist']::text[])) AND (campaigns.lead_id = app.person_id()) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical'))));
+CREATE POLICY campaigns__update__1 ON public.campaigns FOR UPDATE TO rop_app USING ((app.has_any_role(ARRAY['Scientist']::text[])) AND (campaigns.lead_id = app.person_id()) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical')))) WITH CHECK ((app.has_any_role(ARRAY['Scientist']::text[])) AND (campaigns.lead_id = app.person_id()) AND ((campaigns.classification = 'internal' OR app.has_role('RestrictedTechnical'))));
 REVOKE ALL ON public.campaigns FROM rop_app;
 GRANT SELECT, INSERT, UPDATE ON public.campaigns TO rop_app;
 

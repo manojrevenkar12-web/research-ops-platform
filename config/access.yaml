@@ -54,7 +54,11 @@ tables:
     insert:
       - { roles: [Scientist], check: [{ own: lead_id }, { cleared: classification }] }
     update:
-      - { roles: [Scientist], using: [{ own: lead_id }], check: [{ own: lead_id }, { cleared: classification }] }
+      # clearance in USING too: without it a lead whose clearance lapsed could declassify their restricted
+      # campaign with an UPDATE that has no WHERE clause (found by the second blind set)
+      - roles: [Scientist]
+        using: [{ own: lead_id }, { cleared: classification }]
+        check: [{ own: lead_id }, { cleared: classification }]
 
   campaign_members:
     owner: shotlog

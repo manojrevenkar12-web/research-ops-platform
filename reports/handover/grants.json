@@ -40,7 +40,7 @@
   {
    "name": "access proof is current",
    "pass": true,
-   "detail": "inputs 16105f7a273a5f7e"
+   "detail": "inputs 29d44cfaa99c1dd9"
   },
   {
    "name": "database matches the access model on the app's tables, every policy mutant caught",
@@ -50,7 +50,7 @@
   {
    "name": "migrations reversible",
    "pass": true,
-   "detail": "4 migrations down and up again give the same schema"
+   "detail": "5 migrations down and up again give the same schema"
   },
   {
    "name": "every column has a data class",
@@ -68,5 +68,5 @@
    "detail": "10 paths under /api/grants in docs/openapi.json"
   }
  ],
- "generated_at": "2026-11-03T12:30:27.386Z"
+ "generated_at": "2026-11-03T12:48:00.291Z"
 }

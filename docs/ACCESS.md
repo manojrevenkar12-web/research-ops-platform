@@ -33,7 +33,7 @@ Part of the `shotlog` app.
 - **See**: Scientist when it is internal, or they hold RestrictedTechnical (`classification`).
 - **See**: Staff when it is their own (`lead_id`) and it is internal, or they hold RestrictedTechnical (`classification`).
 - **Add**: Scientist when it is their own (`lead_id`) and it is internal, or they hold RestrictedTechnical (`classification`).
-- **Change**: Scientist when it is their own (`lead_id`); the changed row must satisfy: it is their own (`lead_id`) and it is internal, or they hold RestrictedTechnical (`classification`).
+- **Change**: Scientist when it is their own (`lead_id`) and it is internal, or they hold RestrictedTechnical (`classification`); the changed row must satisfy: it is their own (`lead_id`) and it is internal, or they hold RestrictedTechnical (`classification`).
 - **Delete**: nobody through the app.
 
 Columns: internal: id, code, title, facility, entity, classification, lead_id, starts_on, ends_on, created_at.

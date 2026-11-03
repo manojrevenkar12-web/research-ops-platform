@@ -168,6 +168,22 @@ describe("grant time recording", () => {
     });
   });
 
+  it("refuses, rather than ignores, an owner's change to the lead's return reason", async () => {
+    const c = await h.db.app.connect();
+    try {
+      await c.query("BEGIN");
+      await c.query("SELECT set_config('app.person_id', $1, true), set_config('app.roles', 'Staff', true)", [
+        PERSONAS.hana.personId,
+      ]);
+      await expect(
+        c.query("UPDATE time_entries SET return_reason = 'never mind' WHERE id = $1", [ID.te(7)]),
+      ).rejects.toThrow(/only a grant lead sets the reason/);
+    } finally {
+      await c.query("ROLLBACK");
+      c.release();
+    }
+  });
+
   it("refuses to move a personnel cost record to another entity instead of ignoring the change", async () => {
     const c = await h.db.app.connect();
     try {

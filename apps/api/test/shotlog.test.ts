@@ -152,6 +152,37 @@ describe("shot log", () => {
     });
   });
 
+  // Found by the second blind held-out set (heldout/blind-2).
+  it("a lead whose clearance lapsed cannot declassify their restricted campaign, even without a WHERE clause", async () => {
+    const c = await h.db.app.connect();
+    try {
+      await c.query("BEGIN");
+      await c.query(
+        "SELECT set_config('app.person_id', $1, true), set_config('app.roles', 'Staff,Scientist', true), set_config('app.entity', 'DE', true)",
+        ["00000000-0000-4000-8000-000100000002"],
+      );
+      await c.query("UPDATE campaigns SET classification = 'internal'");
+    } finally {
+      await c.query("ROLLBACK");
+      c.release();
+    }
+    const c5 = await h.db.admin.query("SELECT classification FROM campaigns WHERE id = $1", [ID.c5]);
+    expect(c5.rows[0].classification).toBe("restricted");
+    const c2 = await h.db.app.connect();
+    try {
+      await c2.query("BEGIN");
+      await c2.query(
+        "SELECT set_config('app.person_id', $1, true), set_config('app.roles', 'Staff,Scientist', true), set_config('app.entity', 'DE', true)",
+        ["00000000-0000-4000-8000-000100000002"],
+      );
+      const r = await c2.query("UPDATE campaigns SET classification = 'internal'");
+      expect(r.rowCount).toBe(1); // only Ben's own internal campaign, PHX-26-I2
+    } finally {
+      await c2.query("ROLLBACK");
+      c2.release();
+    }
+  });
+
   describe("campaigns and targets", () => {
     it("a scientist creates a campaign and leads it; clearance is needed for a restricted one", async () => {
       const ok = await h.as("ben").post("/api/shotlog/campaigns", {

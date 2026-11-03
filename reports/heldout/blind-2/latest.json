@@ -1,0 +1,2672 @@
+{
+ "set": "blind-2",
+ "status": "regression",
+ "run_at": "2026-11-03T12:47:57.838Z",
+ "cost": {
+  "cases": 44,
+  "passed": 44
+ },
+ "access": {
+  "cases": 222,
+  "passed": 222
+ },
+ "failures": [],
+ "results": [
+  {
+   "name": "eu_daily one person, two entries, funded rounds half up",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "675.00",
+    "indirect_eur": "168.75",
+    "funded_eur": "590.63",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "13.50",
+      "direct_eur": "675.00",
+      "late_hours": "0.00",
+      "other_entity_hours": "0.00",
+      "over_cap_hours": "0.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "675.00",
+    "indirect_eur": "168.75",
+    "funded_eur": "590.63",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "13.50",
+      "direct_eur": "675.00",
+      "late_hours": "0.00",
+      "other_entity_hours": "0.00",
+      "over_cap_hours": "0.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily daily rate is not rounded before multiplying",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "4651.16",
+    "indirect_eur": "1162.79",
+    "funded_eur": "4069.77",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "4651.16",
+    "indirect_eur": "1162.79",
+    "funded_eur": "4069.77",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "eu_daily converts at 8 hours a day and ignores contract and actual hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1500.00",
+    "indirect_eur": "375.00",
+    "funded_eur": "1312.50",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "1500.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "1500.00",
+    "indirect_eur": "375.00",
+    "funded_eur": "1312.50",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "1500.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily a managing director is not capped at 75 EUR per hour",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "800.00",
+    "indirect_eur": "200.00",
+    "funded_eur": "700.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "800.00",
+    "indirect_eur": "200.00",
+    "funded_eur": "700.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "eu_daily people's lines are rounded before they are summed",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "43.59",
+    "indirect_eur": "10.90",
+    "funded_eur": "38.14",
+    "contributors": 3,
+    "lines": {
+     "anna": {
+      "direct_eur": "14.53"
+     },
+     "bob": {
+      "direct_eur": "14.53"
+     },
+     "carl": {
+      "direct_eur": "14.53"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "43.59",
+    "indirect_eur": "10.90",
+    "funded_eur": "38.14",
+    "contributors": 3,
+    "lines": {
+     "anna": {
+      "direct_eur": "14.53"
+     },
+     "bob": {
+      "direct_eur": "14.53"
+     },
+     "carl": {
+      "direct_eur": "14.53"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily no indirect costs and full funding",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "400.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "400.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly one person with quarter hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "612.50",
+    "indirect_eur": "490.00",
+    "funded_eur": "551.25",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "12.25",
+      "direct_eur": "612.50"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "612.50",
+    "indirect_eur": "490.00",
+    "funded_eur": "551.25",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "12.25",
+      "direct_eur": "612.50"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly hourly rate is not rounded before multiplying",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1709.30",
+    "indirect_eur": "1367.44",
+    "funded_eur": "1538.37",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "1709.30",
+    "indirect_eur": "1367.44",
+    "funded_eur": "1538.37",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly person line rounds half up",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "62.51",
+    "indirect_eur": "15.63",
+    "funded_eur": "39.07",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "62.51",
+    "indirect_eur": "15.63",
+    "funded_eur": "39.07",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly indirect and funded round half up",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1000.10",
+    "indirect_eur": "250.03",
+    "funded_eur": "625.07",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "1000.10",
+    "indirect_eur": "250.03",
+    "funded_eur": "625.07",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly two people at different rates",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "627.91",
+    "indirect_eur": "502.33",
+    "funded_eur": "565.12",
+    "contributors": 2,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00"
+     },
+     "bob": {
+      "eligible_hours": "4.00",
+      "direct_eur": "227.91"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "627.91",
+    "indirect_eur": "502.33",
+    "funded_eur": "565.12",
+    "contributors": 2,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00"
+     },
+     "bob": {
+      "eligible_hours": "4.00",
+      "direct_eur": "227.91"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly three quarter-hour lines are rounded before they are summed",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "42.72",
+    "indirect_eur": "34.18",
+    "funded_eur": "38.45",
+    "contributors": 3
+   },
+   "actual": {
+    "direct_eur": "42.72",
+    "indirect_eur": "34.18",
+    "funded_eur": "38.45",
+    "contributors": 3
+   }
+  },
+  {
+   "name": "de_hourly managing director capped at 75 EUR per hour",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "600.00",
+    "indirect_eur": "480.00",
+    "funded_eur": "540.00",
+    "contributors": 1,
+    "lines": {
+     "gerd": {
+      "eligible_hours": "8.00",
+      "direct_eur": "600.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "600.00",
+    "indirect_eur": "480.00",
+    "funded_eur": "540.00",
+    "contributors": 1,
+    "lines": {
+     "gerd": {
+      "eligible_hours": "8.00",
+      "direct_eur": "600.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly managing director below the cap keeps the own rate",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "480.00",
+    "indirect_eur": "384.00",
+    "funded_eur": "432.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "480.00",
+    "indirect_eur": "384.00",
+    "funded_eur": "432.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly managing director cap applies to the rate after dividing by actual hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1800.00",
+    "indirect_eur": "360.00",
+    "funded_eur": "1080.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "1800.00",
+    "indirect_eur": "360.00",
+    "funded_eur": "1080.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly actual hours above contract include draft hours on no grant",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "2400.00",
+    "indirect_eur": "480.00",
+    "funded_eur": "1440.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "2400.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "2400.00",
+    "indirect_eur": "480.00",
+    "funded_eur": "1440.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "2400.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly returned hours do not count as actual hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly actual hours include submitted hours on another grant and late hours, late not charged",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1600.00",
+    "indirect_eur": "320.00",
+    "funded_eur": "960.00",
+    "ineligible_hours": "10.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "20.00",
+      "late_hours": "10.00",
+      "direct_eur": "1600.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "1600.00",
+    "indirect_eur": "320.00",
+    "funded_eur": "960.00",
+    "ineligible_hours": "10.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "20.00",
+      "late_hours": "10.00",
+      "direct_eur": "1600.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly actual hours stop at the end of the month computed",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly actual hours of the previous year do not count in January",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "3000.00",
+    "indirect_eur": "600.00",
+    "funded_eur": "1800.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "de_hourly rate falls in February and February carries the adjustment",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "1000.00",
+    "indirect_eur": "200.00",
+    "funded_eur": "600.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "1000.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "1000.00",
+    "indirect_eur": "200.00",
+    "funded_eur": "600.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "30.00",
+      "direct_eur": "1000.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly negative month when hours on no grant raise actual hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "-1500.00",
+    "indirect_eur": "-300.00",
+    "funded_eur": "-900.00",
+    "ineligible_hours": "0.00",
+    "contributors": 0
+   },
+   "actual": {
+    "direct_eur": "-1500.00",
+    "indirect_eur": "-300.00",
+    "funded_eur": "-900.00",
+    "ineligible_hours": "0.00",
+    "contributors": 0
+   }
+  },
+  {
+   "name": "de_hourly indirect and funded are rounded on year-to-date totals then differenced",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "100.02",
+    "indirect_eur": "25.00",
+    "funded_eur": "62.51",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "100.02",
+    "indirect_eur": "25.00",
+    "funded_eur": "62.51",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "eu_daily person cost is rounded year to date then differenced",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "14.54",
+    "indirect_eur": "3.64",
+    "funded_eur": "12.73",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "0.25",
+      "direct_eur": "14.54"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "14.54",
+    "indirect_eur": "3.64",
+    "funded_eur": "12.73",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "0.25",
+      "direct_eur": "14.54"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily a month shows only its own hours, not earlier or later months",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily January uses that year's personnel cost and ignores December",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "750.00",
+    "indirect_eur": "187.50",
+    "funded_eur": "656.25",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "12.00",
+      "direct_eur": "750.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "750.00",
+    "indirect_eur": "187.50",
+    "funded_eur": "656.25",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "12.00",
+      "direct_eur": "750.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily late approved entry is shown but not charged",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "late_hours": "8.00",
+      "direct_eur": "400.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "late_hours": "8.00",
+      "direct_eur": "400.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly late approved entry is shown but not charged",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "300.00",
+    "indirect_eur": "240.00",
+    "funded_eur": "270.00",
+    "ineligible_hours": "2.50",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "6.00",
+      "late_hours": "2.50",
+      "direct_eur": "300.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "300.00",
+    "indirect_eur": "240.00",
+    "funded_eur": "270.00",
+    "ineligible_hours": "2.50",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "6.00",
+      "late_hours": "2.50",
+      "direct_eur": "300.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily only approved entries count",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "200.00",
+    "indirect_eur": "50.00",
+    "funded_eur": "175.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "200.00",
+    "indirect_eur": "50.00",
+    "funded_eur": "175.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "no approved hours gives zero figures and no contributors",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "0.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "0.00",
+    "ineligible_hours": "0.00",
+    "contributors": 0
+   },
+   "actual": {
+    "direct_eur": "0.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "0.00",
+    "ineligible_hours": "0.00",
+    "contributors": 0
+   }
+  },
+  {
+   "name": "eu_daily hours on no grant and on another grant are not charged here",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "eu_daily employee of another entity is listed but not charged and needs no personnel cost",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00",
+      "other_entity_hours": "0.00"
+     },
+     "bob": {
+      "other_entity_hours": "8.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "8.00",
+      "direct_eur": "400.00",
+      "other_entity_hours": "0.00"
+     },
+     "bob": {
+      "other_entity_hours": "8.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "de_hourly grant of the US entity charges only US employees",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "300.00",
+    "indirect_eur": "90.00",
+    "funded_eur": "195.00",
+    "ineligible_hours": "6.00",
+    "contributors": 1,
+    "lines": {
+     "carl": {
+      "eligible_hours": "6.00",
+      "direct_eur": "300.00"
+     },
+     "anna": {
+      "other_entity_hours": "6.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "300.00",
+    "indirect_eur": "90.00",
+    "funded_eur": "195.00",
+    "ineligible_hours": "6.00",
+    "contributors": 1,
+    "lines": {
+     "carl": {
+      "eligible_hours": "6.00",
+      "direct_eur": "300.00"
+     },
+     "anna": {
+      "other_entity_hours": "6.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "contributors count only people with eligible hours, ineligible hours add up",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "600.00",
+    "indirect_eur": "150.00",
+    "funded_eur": "525.00",
+    "ineligible_hours": "16.00",
+    "contributors": 2,
+    "lines": {
+     "bob": {
+      "eligible_hours": "0.00",
+      "late_hours": "8.00",
+      "direct_eur": "0.00"
+     },
+     "dora": {
+      "other_entity_hours": "8.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "600.00",
+    "indirect_eur": "150.00",
+    "funded_eur": "525.00",
+    "ineligible_hours": "16.00",
+    "contributors": 2,
+    "lines": {
+     "bob": {
+      "eligible_hours": "0.00",
+      "late_hours": "8.00",
+      "direct_eur": "0.00"
+     },
+     "dora": {
+      "other_entity_hours": "8.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily refuses without a personnel cost record",
+   "kind": "cost",
+   "pass": true,
+   "expected": "missing_personnel_cost",
+   "actual": "missing_personnel_cost"
+  },
+  {
+   "name": "de_hourly refuses when the only record is for the previous year",
+   "kind": "cost",
+   "pass": true,
+   "expected": "missing_personnel_cost",
+   "actual": "missing_personnel_cost"
+  },
+  {
+   "name": "no refusal for someone without a record who has only unapproved hours",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "no refusal for someone without a record whose approved hours are on another grant",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1
+   },
+   "actual": {
+    "direct_eur": "400.00",
+    "indirect_eur": "100.00",
+    "funded_eur": "350.00",
+    "contributors": 1
+   }
+  },
+  {
+   "name": "eu_daily 215-day cap on one grant in the month it is reached",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "10500.00",
+    "indirect_eur": "2625.00",
+    "funded_eur": "9187.50",
+    "ineligible_hours": "90.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "90.00",
+      "direct_eur": "10500.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "10500.00",
+    "indirect_eur": "2625.00",
+    "funded_eur": "9187.50",
+    "ineligible_hours": "90.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "90.00",
+      "direct_eur": "10500.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily 215-day cap the month after it was reached",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "0.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "0.00",
+    "ineligible_hours": "20.00",
+    "lines": {
+     "anna": {
+      "over_cap_hours": "20.00",
+      "direct_eur": "0.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "0.00",
+    "indirect_eur": "0.00",
+    "funded_eur": "0.00",
+    "ineligible_hours": "20.00",
+    "lines": {
+     "anna": {
+      "over_cap_hours": "20.00",
+      "direct_eur": "0.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily 215-day cap across two grants keeps days in proportion",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "12200.00",
+    "indirect_eur": "3050.00",
+    "funded_eur": "10675.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "8.00",
+      "direct_eur": "12200.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "12200.00",
+    "indirect_eur": "3050.00",
+    "funded_eur": "10675.00",
+    "ineligible_hours": "8.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "8.00",
+      "direct_eur": "12200.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily cap ignores hours on a de_hourly grant",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "12600.00",
+    "indirect_eur": "3150.00",
+    "funded_eur": "11025.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "252.00",
+      "over_cap_hours": "0.00",
+      "direct_eur": "12600.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "12600.00",
+    "indirect_eur": "3150.00",
+    "funded_eur": "11025.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "252.00",
+      "over_cap_hours": "0.00",
+      "direct_eur": "12600.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily cap ignores late hours on another eu_daily grant",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "12600.00",
+    "indirect_eur": "3150.00",
+    "funded_eur": "11025.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "0.00",
+      "direct_eur": "12600.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "12600.00",
+    "indirect_eur": "3150.00",
+    "funded_eur": "11025.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "over_cap_hours": "0.00",
+      "direct_eur": "12600.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "eu_daily cap starts again in a new year",
+   "kind": "cost",
+   "pass": true,
+   "expected": {
+    "direct_eur": "2000.00",
+    "indirect_eur": "500.00",
+    "funded_eur": "1750.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "40.00",
+      "over_cap_hours": "0.00",
+      "direct_eur": "2000.00"
+     }
+    }
+   },
+   "actual": {
+    "direct_eur": "2000.00",
+    "indirect_eur": "500.00",
+    "funded_eur": "1750.00",
+    "ineligible_hours": "0.00",
+    "contributors": 1,
+    "lines": {
+     "anna": {
+      "eligible_hours": "40.00",
+      "over_cap_hours": "0.00",
+      "direct_eur": "2000.00"
+     }
+    }
+   }
+  },
+  {
+   "name": "staff see people",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a Platform-only service principal does not see people",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "the cost-snapshot service principal sees people (it holds Staff)",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "nobody adds people through the app, not even PeopleOps",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes people through the app",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes people through the app",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a cleared scientist sees a restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a cleared scientist of another entity sees a restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "an uncleared scientist does not see a restricted campaign they are not leading",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "an uncleared lead does not see their own restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a scientist sees an internal campaign of another entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a non-scientist still sees the internal campaign they lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a non-scientist does not see an internal campaign they do not lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance does not see campaigns",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a scientist adds an internal campaign they lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a scientist cannot add a campaign led by someone else",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an uncleared scientist cannot add a restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a cleared scientist adds a restricted campaign they lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a non-scientist cannot add a campaign even as its lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead changes the title of their own internal campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "an uncleared lead cannot make their campaign restricted",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot hand their campaign to someone else",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an operator cannot change a campaign they do not lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead who is not a scientist cannot change their campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an uncleared lead cannot retitle their restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes campaigns, not even their lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see campaign members",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a scientist lead adds a member to their campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a scientist who does not lead the campaign cannot add members",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an operator cannot add members to the campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead who is not a scientist cannot add members",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a cleared lead adds a member to their restricted campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a lead removes a member from their campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a member cannot remove themselves from a campaign they do not lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes a member's role",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a cleared scientist sees a restricted shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a cleared scientist sees a restricted correction logged by someone else",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "an uncleared scientist does not see a restricted shot of a campaign they observe",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "an uncleared scientist sees an internal shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a scientist sees an internal shot of another entity's campaign",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a non-scientist does not see shots, even internal ones",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "executive does not see shots",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a campaign lead logs an internal shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a campaign operator logs an internal shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a cleared operator logs a restricted shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a cleared lead logs a correction as a new shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "an observer cannot log a shot, even an internal one",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a scientist who is not a member cannot log a shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a scientist cannot log a shot in someone else's name",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an uncleared lead cannot log a restricted shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a non-scientist lead cannot log a shot",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "shots are append-only, the logger cannot change one",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "shots are append-only, nobody deletes one",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see targets",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a scientist adds a fabricated target",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a scientist cannot add a target that is already allocated",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a non-scientist cannot add a target",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a scientist characterizes a fabricated target",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a non-scientist cannot change a target",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes targets",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see target events",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "target events are written only by the trigger, a scientist cannot add one",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes a target event",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes a target event",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see grants",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a Platform-only service principal does not see grants",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance adds a grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a scientist lead cannot add a grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance changes a grant title",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "finance of the other entity may change a grant (the grants policy has no entity condition)",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead cannot change the grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "executive cannot change a grant's funding rate",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes grants, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see work packages",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance adds a work package",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead cannot add a work package",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes a work package, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes a work package, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see grant members",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance adds a grant member",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead cannot add a grant member",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance removes a grant member",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead cannot remove a grant member",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes a grant member's role, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a person sees their own returned entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a person does not see a colleague's entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a grant lead sees a member's entry on their grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a grant lead sees a member's entry of another entity on their grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "a plain member does not see other members' entries on the grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "being lead of one grant does not show entries of another grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a lead does not see a person's entry on no grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance sees everyone's entries",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance of the other entity also sees entries (no entity condition on time_entries)",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "the cost-snapshot service principal sees entries (it holds Finance)",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "executive does not see other people's entries",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "PeopleOps does not see time entries",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a Platform service principal does not see time entries",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a member records a submitted entry on their grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a person records a quarter hour on no grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "an employee of another entity records hours on a grant they are a member of",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "nobody records hours for someone else",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot record hours for a member of their grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody records an entry already approved",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody records an entry as returned",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "hours must be quarter hours",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "hours must be more than zero",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "hours cannot be negative",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "more than 10 hours in one entry breaks the daily limit",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "exactly 10 hours on an empty day is allowed",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "daily limit counts the existing submitted entry, 2 + 8.25 is too much",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "daily limit allows reaching exactly 10 hours, 2 + 8",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "daily limit counts a late approved entry, 9 + 1.25 is too much",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "daily limit counts a draft entry, 4 + 6.25 is too much",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "daily limit is per person, another person's hours that day do not count",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "no hours for a future date",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "no hours on a grant before the grant starts",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "no hours on a grant the person is not a member of",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "no new entry in a closed month of the grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a closed month of one grant does not block hours on no grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a closed month of one grant does not block another grant's same month",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a Platform service principal cannot record hours",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a grant lead approves a member's submitted entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead approves a submitted entry on the other grant they lead",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead returns a submitted entry with a reason",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a return needs a reason",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a return reason must have at least 3 characters",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a return reason of exactly 3 characters is enough",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a lead cannot approve their own submitted entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot return their own submitted entry either",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot change the hours while approving",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot move an entry to another work package while approving",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot change a member's note",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot decide a draft that was never submitted",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot approve a returned entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead cannot reopen an approved entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a lead of another grant cannot decide this grant's entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a plain member of the grant cannot approve",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot approve hours",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "executive cannot approve hours on a grant they are a member of",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner changes the hours of their draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner submits their draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner cannot approve their own draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot raise a draft above the daily limit",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner raises a draft to exactly the daily limit",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner cannot set hours that are not quarter hours",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot move a draft into a closed month of the grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot move a draft onto a day that already has 9 hours",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot move a draft to a future date",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner reworks a returned entry back to a draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner resubmits a returned entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner cannot change the lead's return reason",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "an edited returned entry must leave the returned status (the changed row must be draft or submitted)",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot change their submitted entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot pull a submitted entry back to draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot change their approved entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes an entry of a closed month, not even its owner",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a person cannot change a colleague's draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner deletes their draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner deletes their draft on no grant",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the owner cannot delete a submitted entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot delete a returned entry",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the owner cannot delete an approved entry of a closed month",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "a grant lead cannot delete a member's draft",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot delete entries",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "PeopleOps sees personnel costs of their entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "PeopleOps does not see personnel costs of the other entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "US PeopleOps sees US personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "US PeopleOps does not see DE personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance sees personnel costs of their entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance does not see personnel costs of the other entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "US finance sees US personnel costs only",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "the cost-snapshot service principal sees DE personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "the cost-snapshot service principal (entity DE) does not see US personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a person does not see their own personnel cost",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "executive does not see personnel costs, not even their own",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "PeopleOps adds a personnel cost of their entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "US PeopleOps adds a US personnel cost",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "PeopleOps cannot add a personnel cost for the other entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot add personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "PeopleOps corrects a personnel cost of their entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "PeopleOps cannot change a personnel cost of the other entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "PeopleOps cannot move a personnel cost to the other entity",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot change personnel costs",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes personnel costs, not even PeopleOps",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "staff see cost periods",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance closes an open month",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "finance opens a new period",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "a grant lead cannot close a month",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes a cost period, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance sees a grant total",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "finance of the other entity sees a grant total (no entity condition on snapshots)",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "executive sees a total over 3 contributors",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "executive does not see a total over one contributor",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a grant lead does not see grant totals",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "PeopleOps does not see grant totals",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance updates the total of an open month",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the cost-snapshot job updates the total of an open month",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the figures of a closed month cannot change, not even by finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "executive cannot lower the contributors of a total",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "executive cannot add a grant total",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes a grant total, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance sees audit events",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "US finance sees audit events",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "executive does not see audit events",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "staff do not see audit events",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "a Platform service principal does not see audit events",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "nobody writes audit events through the app, not even finance",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody changes an audit event",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes an audit event",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "the dispatcher sees the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "visible",
+   "actual": "visible"
+  },
+  {
+   "name": "staff do not see the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "finance does not see the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "hidden",
+   "actual": "hidden"
+  },
+  {
+   "name": "staff add a message to the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the reminders job adds a message to the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "the dispatcher marks a message dispatched",
+   "kind": "access",
+   "pass": true,
+   "expected": "allowed",
+   "actual": "allowed"
+  },
+  {
+   "name": "staff cannot mark a message dispatched",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot change the outbox",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes from the outbox, not even the dispatcher",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody adds a setting through the app",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "executive cannot lower the minimum group size",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "finance cannot change the minimum group size",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  },
+  {
+   "name": "nobody deletes a setting",
+   "kind": "access",
+   "pass": true,
+   "expected": "denied",
+   "actual": "denied"
+  }
+ ]
+}
