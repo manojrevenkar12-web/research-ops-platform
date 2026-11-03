@@ -1,0 +1,54 @@
+{
+  "name": "research-ops-platform",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "db:up": "scripts/db.sh up",
+    "db:down": "scripts/db.sh down",
+    "generate": "tsx scripts/generate.ts",
+    "migrate": "tsx scripts/migrate.ts up",
+    "seed": "tsx scripts/seed.ts",
+    "dev:api": "tsx watch apps/api/src/main.ts",
+    "dev:web": "pnpm --filter @rop/web dev",
+    "typecheck": "tsc --noEmit -p tsconfig.json && pnpm --filter @rop/web typecheck",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "test:web": "pnpm --filter @rop/web test",
+    "e2e": "pnpm --filter @rop/web e2e",
+    "proof": "tsx scripts/proof.ts",
+    "handover": "tsx scripts/handover.ts",
+    "heldout": "tsx scripts/heldout.ts",
+    "build": "tsx scripts/build.ts && pnpm --filter @rop/web build",
+    "check": "scripts/check.sh"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@types/node": "22.18.6",
+    "@types/pg": "8.15.5",
+    "esbuild": "0.25.10",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4",
+    "fast-check": "4.3.0"
+  },
+  "dependencies": {
+    "@rop/platform": "workspace:*",
+    "@rop/access": "workspace:*",
+    "@rop/db": "workspace:*",
+    "@rop/auth": "workspace:*",
+    "@rop/observability": "workspace:*",
+    "@rop/api": "workspace:*",
+    "@rop/jobs": "workspace:*",
+    "pg": "8.16.3",
+    "@rop/costs": "workspace:*"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

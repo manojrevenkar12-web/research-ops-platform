@@ -1,0 +1,220 @@
+# The access model: the single source for who can see and change what.
+#
+# Nothing about access is written twice. From this file the generator produces
+#   - the PostgreSQL row-level security policies and table grants (packages/db/generated/policies.sql),
+#   - the Entra ID app roles for the API's app registration (infra/generated/app_roles.auto.tfvars.json),
+#   - the who-can-see document (docs/ACCESS.md),
+# and the reference evaluator (packages/access/src/evaluate.ts) reads it to compute what the database
+# *should* return, which the access proof compares with what it *does* return.
+#
+# Semantics follow PostgreSQL: every rule is a permissive policy. A row is visible when any select rule
+# matches. An UPDATE needs one rule whose `using` matches the old row and one rule whose `check` (or
+# `using`, when it has no check) matches the new row. They need not be the same rule, which is why
+# column-level guarantees ("a lead may only change the status") live in triggers, not here.
+
+version: 1
+
+roles: # Entra ID app roles, as they arrive in the token's `roles` claim
+  Staff: Everyone employed by the company.
+  Scientist: Plans campaigns, logs shots and handles targets.
+  Finance: Grant accounting and funding reports.
+  PeopleOps: Employment records, including personnel costs.
+  Executive: Company-level reporting.
+  RestrictedTechnical: Cleared to read restricted technical data.
+  Platform: Service identities that operate the platform; never assigned to a person.
+
+data_classes:
+  internal: Anyone at the company may see it.
+  personal: About one person; visible to that person and to the people who must process it.
+  confidential: Business-sensitive; visible to named functions only.
+  restricted: Restricted technical data; visible only with RestrictedTechnical clearance.
+
+# Identities that are not people: scheduled jobs run as these principals, with these roles only.
+service_principals:
+  cost-snapshot: { roles: [Staff, Finance], entity: DE }
+  reminders: { roles: [Staff], entity: DE }
+  dispatcher: { roles: [Platform], entity: DE }
+
+tables:
+  people:
+    owner: software
+    columns: { id: internal, entra_oid: internal, display_name: internal, email: internal, entity: internal, team: internal, active: internal }
+    select:
+      - { roles: [Staff] }
+
+  campaigns:
+    owner: shotlog
+    columns:
+      { id: internal, code: internal, title: internal, facility: internal, entity: internal, classification: internal,
+        lead_id: internal, starts_on: internal, ends_on: internal, created_at: internal }
+    select:
+      - { roles: [Scientist], where: [{ cleared: classification }] }
+      # people change teams: whoever leads a campaign keeps seeing it (clearance still applies)
+      - { roles: [Staff], where: [{ own: lead_id }, { cleared: classification }] }
+    insert:
+      - { roles: [Scientist], check: [{ own: lead_id }, { cleared: classification }] }
+    update:
+      - { roles: [Scientist], using: [{ own: lead_id }], check: [{ own: lead_id }, { cleared: classification }] }
+
+  campaign_members:
+    owner: shotlog
+    columns: { campaign_id: internal, person_id: internal, role: internal }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Scientist], check: [{ member: { of: campaigns, on: { id: campaign_id }, person: lead_id } }] }
+    delete:
+      - { roles: [Scientist], where: [{ member: { of: campaigns, on: { id: campaign_id }, person: lead_id } }] }
+
+  shots:
+    owner: shotlog
+    columns:
+      { id: internal, campaign_id: internal, shot_no: internal, fired_at: internal, target_id: internal,
+        energy_j: restricted, pulse_ns: restricted, outcome: internal, notes: restricted, classification: internal,
+        logged_by: internal, logged_at: internal, corrects: internal, search: restricted }
+    select:
+      - { roles: [Scientist], where: [{ cleared: classification }] }
+    insert: # append-only: corrections are new entries that point at the shot they correct
+      - roles: [Scientist]
+        check:
+          - { own: logged_by }
+          - { cleared: classification }
+          - { member: { of: campaign_members, on: { campaign_id: campaign_id }, roles: [lead, operator] } }
+
+  targets:
+    owner: shotlog
+    columns:
+      { id: internal, serial: internal, batch: internal, design: internal, status: internal, campaign_id: internal,
+        characterization: internal, updated_at: internal }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Scientist], check: [{ in: { status: [fabricated] } }] }
+    update:
+      - { roles: [Scientist] }
+
+  target_events:
+    owner: shotlog
+    columns: { id: internal, target_id: internal, from_status: internal, to_status: internal, by_person: internal, at: internal, note: internal }
+    select: # written only by the targets trigger
+      - { roles: [Staff] }
+
+  grants:
+    owner: grants
+    columns:
+      { id: internal, code: internal, title: internal, funder: internal, method: internal, entity: internal,
+        starts_on: internal, ends_on: internal, funding_rate: confidential, indirect_rate: confidential }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Finance] }
+    update:
+      - { roles: [Finance] }
+
+  work_packages:
+    owner: grants
+    columns: { id: internal, grant_id: internal, code: internal, title: internal }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Finance] }
+
+  grant_members:
+    owner: grants
+    columns: { grant_id: internal, person_id: internal, role: internal }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Finance] }
+    delete:
+      - { roles: [Finance] }
+
+  time_entries:
+    owner: grants
+    columns:
+      { id: personal, person_id: personal, work_date: personal, work_package_id: personal, grant_id: personal,
+        activity: personal, hours: personal, status: personal, approved_by: personal, approved_at: personal,
+        recorded_at: personal, late: personal, note: personal }
+    select:
+      - { roles: [Staff], where: [{ own: person_id }] }
+      - { roles: [Staff], where: [{ member: { of: grant_members, on: { grant_id: grant_id }, roles: [lead] } }] }
+      - { roles: [Finance] }
+    insert:
+      - { roles: [Staff], check: [{ own: person_id }, { in: { status: [draft, submitted] } }] }
+    update:
+      # the owner edits drafts and returned entries and submits them
+      - roles: [Staff]
+        using: [{ own: person_id }, { in: { status: [draft, returned] } }]
+        check: [{ own: person_id }, { in: { status: [draft, submitted] } }]
+      # a grant lead approves or returns someone else's submitted entry
+      - roles: [Staff]
+        using:
+          - { not_own: person_id }
+          - { in: { status: [submitted] } }
+          - { member: { of: grant_members, on: { grant_id: grant_id }, roles: [lead] } }
+        check:
+          - { not_own: person_id }
+          - { in: { status: [approved, returned] } }
+          - { member: { of: grant_members, on: { grant_id: grant_id }, roles: [lead] } }
+    delete:
+      - { roles: [Staff], where: [{ own: person_id }, { in: { status: [draft] } }] }
+
+  salary_costs:
+    owner: grants
+    columns:
+      { person_id: personal, entity: confidential, year: confidential, annual_cost_eur: confidential,
+        contract_hours: confidential, managing_director: confidential }
+    select:
+      - { roles: [PeopleOps], where: [{ same_entity: entity }] }
+      - { roles: [Finance], where: [{ same_entity: entity }] }
+    insert:
+      - { roles: [PeopleOps], check: [{ same_entity: entity }] }
+    update:
+      - { roles: [PeopleOps], using: [{ same_entity: entity }], check: [{ same_entity: entity }] }
+
+  cost_periods:
+    owner: grants
+    columns: { grant_id: internal, period: internal, status: internal, closed_at: internal, closed_by: internal }
+    select:
+      - { roles: [Staff] }
+    insert:
+      - { roles: [Finance] }
+    update:
+      - { roles: [Finance] }
+
+  grant_cost_snapshots:
+    owner: grants
+    columns:
+      { grant_id: confidential, period: confidential, direct_eur: confidential, indirect_eur: confidential,
+        funded_eur: confidential, ineligible_hours: confidential, contributors: confidential, computed_at: confidential }
+    select:
+      - { roles: [Finance] }
+      # A total over one or two people is their pay: executives see a total only when enough people are in it.
+      - { roles: [Executive], where: [{ at_least: { column: contributors, setting: min_group_size } }] }
+    insert:
+      - { roles: [Finance] }
+    update:
+      - { roles: [Finance] }
+
+  audit_events:
+    owner: software
+    columns:
+      { id: internal, at: internal, actor: personal, table_name: internal, row_id: internal, action: internal, change: confidential }
+    select:
+      - { roles: [Finance] }
+
+  outbox:
+    owner: software
+    columns: { id: internal, topic: internal, payload: personal, created_at: internal, dispatched_at: internal }
+    select:
+      - { roles: [Platform] }
+    insert:
+      - { roles: [Staff] }
+    update:
+      - { roles: [Platform] }
+
+  settings:
+    owner: software
+    columns: { key: internal, value: internal }
+    select:
+      - { roles: [Staff] }

@@ -1,0 +1,13 @@
+DROP TABLE public.grant_cost_snapshots;
+DROP TABLE public.cost_periods;
+DROP TABLE public.salary_costs;
+DROP TABLE public.time_entries;
+DROP TABLE public.grant_members;
+DROP TABLE public.work_packages;
+DROP TABLE public.grants;
+DROP FUNCTION app.snapshots_frozen();
+DROP FUNCTION app.cost_periods_final();
+DROP FUNCTION app.salary_costs_entity();
+DROP FUNCTION app.time_entries_daily_limit();
+DROP FUNCTION app.time_entries_before();
+DROP FUNCTION app.period_closed(uuid, date);

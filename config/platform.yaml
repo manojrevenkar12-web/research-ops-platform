@@ -1,0 +1,35 @@
+# Settings shared by every app on the platform. Environment variables override the values marked (env).
+
+api:
+  port: 8080                       # (env PORT)
+  body_limit_bytes: 262144
+  request_timeout_ms: 15000
+  page_size_default: 25
+  page_size_max: 100
+
+database:
+  pool_max: 10
+  statement_timeout_ms: 5000       # set per transaction, so one slow query cannot hold a connection
+  idle_in_transaction_timeout_ms: 10000
+  runtime_role: rop_app            # the API logs in as this role: no BYPASSRLS, owns nothing
+
+auth:
+  # Production: Microsoft Entra ID (single tenant). Values come from the environment at deploy time.
+  issuer: "https://login.microsoftonline.com/${ENTRA_TENANT_ID}/v2.0"
+  audience: "api://research-ops-platform"
+  jwks_uri: "https://login.microsoftonline.com/${ENTRA_TENANT_ID}/discovery/v2.0/keys"
+  clock_tolerance_s: 60
+  # Local development and tests sign tokens with a dev issuer. The API refuses to start with it when
+  # NODE_ENV is production.
+  dev_issuer: "http://localhost/dev-issuer"
+
+search:
+  max_results: 50
+  min_query_chars: 2
+
+shotlog:
+  max_notes_chars: 4000
+
+observability:
+  service_name: research-ops-api
+  slow_request_ms: 1000            # logged at warn level

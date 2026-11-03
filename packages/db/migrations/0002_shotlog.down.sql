@@ -1,0 +1,10 @@
+DROP TABLE public.shots;
+DROP TABLE public.target_events;
+DROP TABLE public.targets;
+DROP TABLE public.campaign_members;
+DROP TABLE public.campaigns;
+DROP FUNCTION app.targets_log();
+DROP FUNCTION app.targets_lifecycle();
+DROP FUNCTION app.append_only();
+DROP FUNCTION app.shots_after_insert();
+DROP FUNCTION app.shots_before_insert();

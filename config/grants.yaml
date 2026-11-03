@@ -1,0 +1,27 @@
+# Rules for grant time recording and personnel-cost reporting.
+#
+# These are the settings the code reads; the reasoning and the sources are in docs/GRANT_RULES.md.
+# They model two common cost methods. They are examples, not legal advice: the grant agreement or the
+# funding notice (Zuwendungsbescheid) of each grant decides, and Finance owns this file.
+
+time_recording:
+  max_hours_per_day: 10          # Arbeitszeitgesetz: at most 10 hours a working day
+  contemporaneous_days: 7        # an entry recorded more than this many days after the work is "late"
+  late_entries_eligible: false   # late entries are kept and shown, but not charged to a grant
+  period: month                  # cost periods are calendar months; a closed period cannot change
+
+methods:
+  eu_daily:                      # Horizon Europe style: daily rate = annual personnel cost / 215
+    days_per_year: 215
+    day_equivalent_hours: 8      # hours are converted to days at 8 hours per day
+    cap_days_per_person_year: 215  # across all eu_daily grants together; days above the cap are ineligible
+  de_hourly:                     # German cost basis: hourly rate = annual cost / annual hours
+    divide_by: max_of_contract_and_actual   # when someone works more than the contract says, divide by actual hours
+    managing_director_max_hourly_eur: 75.00 # a managing director is charged at most a senior project rate
+
+money:
+  currency: EUR
+  rounding: half_up_cents        # each person's line is rounded to cents, totals are sums of rounded lines
+
+reporting:
+  min_group_size: 3              # a total over fewer people than this is not shown to Executive

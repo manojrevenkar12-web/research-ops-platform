@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.vite/
+*.log
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+infra/.terraform/
+infra/*.tfstate*
+/tmp/
+reports/coverage/

@@ -1,0 +1,14 @@
+# Policy mutants that no test can catch because something else already guarantees what the rule says.
+# Each entry needs a reason a reviewer can check. The proof fails if a mutant survives without an entry
+# here, and also if a listed mutant is caught (the entry is then wrong and must go).
+
+equivalent:
+  "time_entries.update[2].check[3]:drop":
+    reason: >
+      The lead's USING already requires lead membership of the entry's grant, and a lead cannot change the
+      entry's work package (time_entries_before trigger), so the grant of the new row is the grant of the
+      old row and the CHECK repeats the USING.
+  "salary_costs.update[1].check[1]:drop":
+    reason: >
+      The entity of a salary record is fixed when it is created (salary_costs_entity trigger keeps OLD.entity
+      on update), so a row that passed the USING's same-entity test still passes it as the new row.

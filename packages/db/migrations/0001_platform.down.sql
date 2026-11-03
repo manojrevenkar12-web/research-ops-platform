@@ -1,0 +1,12 @@
+DROP TABLE public.outbox;
+DROP FUNCTION app.audit();
+DROP TABLE public.audit_events;
+DROP TABLE public.people;
+DROP FUNCTION app.setting_int(text);
+DROP TABLE public.settings;
+DROP FUNCTION app.entity();
+DROP FUNCTION app.has_any_role(text[]);
+DROP FUNCTION app.has_role(text);
+DROP FUNCTION app.roles();
+DROP FUNCTION app.person_id();
+DROP SCHEMA app;

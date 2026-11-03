@@ -1,0 +1,17 @@
+{
+  "name": "@rop/jobs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@rop/platform": "workspace:*",
+    "@rop/db": "workspace:*",
+    "@rop/observability": "workspace:*",
+    "@azure/functions": "4.8.0",
+    "@rop/costs": "workspace:*",
+    "@rop/access": "workspace:*"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@rop/costs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@rop/platform": "workspace:*",
+    "decimal.js": "10.6.0",
+    "pg": "8.16.3"
+  },
+  "devDependencies": {
+    "fast-check": "4.3.0"
+  }
+}

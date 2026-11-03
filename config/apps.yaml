@@ -1,0 +1,34 @@
+# The apps built on the platform and who owns each after handover. The handover gate
+# (`pnpm handover <app>`) reads this file and docs/runbooks/<app>.md.
+
+apps:
+  shotlog:
+    title: Shot log and target inventory
+    for: Experimental physics (laser campaigns)
+    owner: { team: Experimental Physics, contact: shotlog-owners@example.com }
+    tables: [campaigns, campaign_members, shots, targets, target_events]
+    routes_prefix: /api/shotlog
+    runbook: docs/runbooks/shotlog.md
+    alerts: [api_5xx_rate, api_p95_latency, shot_insert_conflicts]
+  grants:
+    title: Grant time and cost reporting
+    for: Finance and every funded project
+    owner: { team: Finance, contact: grants-owners@example.com }
+    tables: [grants, work_packages, grant_members, time_entries, salary_costs, cost_periods, grant_cost_snapshots]
+    routes_prefix: /api/grants
+    runbook: docs/runbooks/grants.md
+    alerts: [api_5xx_rate, api_p95_latency, cost_snapshot_failed, unsubmitted_hours_backlog]
+
+handover:
+  runbook_sections:
+    - What it does
+    - Who uses it
+    - How to run it locally
+    - How it is deployed
+    - Alerts and what to do
+    - Data and access
+    - Backups and recovery
+    - Known limits
+  min_route_test_coverage: 1.0     # every route of the app is called by at least one API test
+  require_reversible_migrations: true
+  require_access_proof: true       # every policy mutant on the app's tables is caught

@@ -1,0 +1,41 @@
+# Alerts, defined once. infra/ turns them into Azure Monitor alert rules; the handover gate checks
+# that every alert an app lists exists here and that its metric is emitted by the code.
+
+alerts:
+  api_5xx_rate:
+    metric: http_server_requests_total
+    filter: { status_class: "5xx" }
+    condition: rate_over_total
+    threshold: 0.02
+    window_minutes: 10
+    severity: 2
+    runbook_anchor: alerts-and-what-to-do
+  api_p95_latency:
+    metric: http_server_duration_ms
+    condition: p95
+    threshold: 800
+    window_minutes: 15
+    severity: 3
+    runbook_anchor: alerts-and-what-to-do
+  shot_insert_conflicts:
+    metric: shotlog_shot_conflicts_total
+    condition: count
+    threshold: 5
+    window_minutes: 30
+    severity: 3
+    runbook_anchor: alerts-and-what-to-do
+  cost_snapshot_failed:
+    metric: job_runs_total
+    filter: { job: cost-snapshot, outcome: failed }
+    condition: count
+    threshold: 1
+    window_minutes: 1440
+    severity: 2
+    runbook_anchor: alerts-and-what-to-do
+  unsubmitted_hours_backlog:
+    metric: grants_unsubmitted_entries
+    condition: last
+    threshold: 200
+    window_minutes: 1440
+    severity: 4
+    runbook_anchor: alerts-and-what-to-do
