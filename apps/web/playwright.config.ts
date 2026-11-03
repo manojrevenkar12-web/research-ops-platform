@@ -23,6 +23,7 @@ export default defineConfig({
       env: { AUTH_MODE: "dev", ROP_DATABASE_URL: db, LOG_LEVEL: "warn" },
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
+      stdout: "pipe",
     },
     {
       command: "pnpm preview",

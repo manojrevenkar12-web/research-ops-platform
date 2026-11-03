@@ -44,16 +44,15 @@ export function settingsFromConfig(): Record<string, number | boolean | string> 
 
 export async function ensureRuntimeRole(admin: pg.ClientBase, password: string): Promise<void> {
   const role = platformConfig().database.runtime_role;
-  const exists = await admin.query("SELECT 1 FROM pg_roles WHERE rolname = $1", [role]);
   const pw = password.replaceAll("'", "''");
-  if (!exists.rowCount) {
-    await admin.query(
-      `CREATE ROLE ${role} LOGIN PASSWORD '${pw}' NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE`,
-    );
-  } else {
-    await admin.query(
-      `ALTER ROLE ${role} LOGIN PASSWORD '${pw}' NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE`,
-    );
+  const attrs = `LOGIN PASSWORD '${pw}' NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE`;
+  // Test files create databases in parallel; two of them may try to create the role at the same moment.
+  try {
+    await admin.query(`CREATE ROLE ${role} ${attrs}`);
+  } catch (err) {
+    const code = (err as { code?: string }).code;
+    if (code !== "42710" && code !== "23505") throw err;
+    await admin.query(`ALTER ROLE ${role} ${attrs}`);
   }
 }
 

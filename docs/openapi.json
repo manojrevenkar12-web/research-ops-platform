@@ -21,7 +21,11 @@
     "schemas": {
       "Problem": {
         "type": "object",
-        "required": ["type", "title", "status"],
+        "required": [
+          "type",
+          "title",
+          "status"
+        ],
         "properties": {
           "type": {
             "type": "string",
@@ -48,7 +52,9 @@
     "/api/access/model": {
       "get": {
         "summary": "The access model: roles, data classes and the rules of every table",
-        "tags": ["platform"],
+        "tags": [
+          "platform"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -74,7 +80,9 @@
     "/api/grants": {
       "get": {
         "summary": "Grants with their work packages and your role on each",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -100,7 +108,9 @@
     "/api/grants/{id}/cost": {
       "get": {
         "summary": "Personnel cost of a grant in a month, per person (Finance)",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "description": "Needs one of the roles: Finance. Row-level security decides the rest.",
         "parameters": [
           {
@@ -148,7 +158,9 @@
     "/api/grants/{id}/periods/{period}/close": {
       "post": {
         "summary": "Compute the month's figures and close it for good (Finance)",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "description": "Needs one of the roles: Finance. Row-level security decides the rest.",
         "parameters": [
           {
@@ -196,7 +208,9 @@
     "/api/grants/approvals": {
       "get": {
         "summary": "Entries waiting for your decision on the grants you lead",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -222,7 +236,9 @@
     "/api/grants/reporting": {
       "get": {
         "summary": "Grant totals by month; a total over too few people is withheld from Executive",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "description": "Needs one of the roles: Finance, Executive. Row-level security decides the rest.",
         "responses": {
           "200": {
@@ -249,7 +265,9 @@
     "/api/grants/time-entries": {
       "post": {
         "summary": "Record hours, optionally submitting them straight away",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -297,7 +315,11 @@
                     "type": "boolean"
                   }
                 },
-                "required": ["work_date", "activity", "hours"]
+                "required": [
+                  "work_date",
+                  "activity",
+                  "hours"
+                ]
               }
             }
           }
@@ -327,7 +349,9 @@
     "/api/grants/time-entries/{id}": {
       "delete": {
         "summary": "Delete one of your draft entries",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -363,7 +387,9 @@
       },
       "patch": {
         "summary": "Change one of your draft or returned entries",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -446,7 +472,9 @@
     "/api/grants/time-entries/{id}/decision": {
       "post": {
         "summary": "Approve or return someone's submitted entry on a grant you lead",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -474,7 +502,9 @@
                         "const": "approve"
                       }
                     },
-                    "required": ["decision"]
+                    "required": [
+                      "decision"
+                    ]
                   },
                   {
                     "type": "object",
@@ -489,7 +519,10 @@
                         "maxLength": 500
                       }
                     },
-                    "required": ["decision", "reason"]
+                    "required": [
+                      "decision",
+                      "reason"
+                    ]
                   }
                 ]
               }
@@ -521,7 +554,9 @@
     "/api/grants/time-entries/{id}/submit": {
       "post": {
         "summary": "Submit one of your entries for approval",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -559,7 +594,9 @@
     "/api/grants/timesheet": {
       "get": {
         "summary": "Your entries between two dates and the work packages you can book to",
-        "tags": ["grants"],
+        "tags": [
+          "grants"
+        ],
         "parameters": [
           {
             "name": "from",
@@ -607,7 +644,9 @@
     "/api/me": {
       "get": {
         "summary": "The signed-in person, their roles and the apps they can use",
-        "tags": ["platform"],
+        "tags": [
+          "platform"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -633,7 +672,9 @@
     "/api/reports/{name}": {
       "get": {
         "summary": "A generated report: the access proof or the handover gate",
-        "tags": ["platform"],
+        "tags": [
+          "platform"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -641,7 +682,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["access-proof", "handover", "heldout"]
+              "enum": [
+                "access-proof",
+                "handover",
+                "heldout"
+              ]
             }
           }
         ],
@@ -670,7 +715,9 @@
     "/api/shotlog/campaigns": {
       "get": {
         "summary": "Campaigns you can see, newest first, with shot counts",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -694,7 +741,9 @@
       },
       "post": {
         "summary": "Create a campaign you lead",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "description": "Needs one of the roles: Scientist. Row-level security decides the rest.",
         "requestBody": {
           "required": true,
@@ -720,11 +769,17 @@
                   },
                   "entity": {
                     "type": "string",
-                    "enum": ["DE", "US"]
+                    "enum": [
+                      "DE",
+                      "US"
+                    ]
                   },
                   "classification": {
                     "type": "string",
-                    "enum": ["internal", "restricted"]
+                    "enum": [
+                      "internal",
+                      "restricted"
+                    ]
                   },
                   "starts_on": {
                     "type": "string",
@@ -745,7 +800,14 @@
                     ]
                   }
                 },
-                "required": ["code", "title", "facility", "entity", "classification", "starts_on"]
+                "required": [
+                  "code",
+                  "title",
+                  "facility",
+                  "entity",
+                  "classification",
+                  "starts_on"
+                ]
               }
             }
           }
@@ -775,7 +837,9 @@
     "/api/shotlog/campaigns/{id}": {
       "get": {
         "summary": "One campaign with its members",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -813,7 +877,9 @@
     "/api/shotlog/campaigns/{id}/members": {
       "post": {
         "summary": "Add someone to a campaign you lead",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -841,10 +907,16 @@
                   },
                   "role": {
                     "type": "string",
-                    "enum": ["operator", "observer"]
+                    "enum": [
+                      "operator",
+                      "observer"
+                    ]
                   }
                 },
-                "required": ["person_id", "role"]
+                "required": [
+                  "person_id",
+                  "role"
+                ]
               }
             }
           }
@@ -874,7 +946,9 @@
     "/api/shotlog/campaigns/{id}/shots": {
       "get": {
         "summary": "The campaign's shots, latest first; each shows its latest correction",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -921,7 +995,9 @@
       },
       "post": {
         "summary": "Log the campaign's next shot; the number is assigned here",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -988,7 +1064,12 @@
                   },
                   "outcome": {
                     "type": "string",
-                    "enum": ["nominal", "partial", "misfire", "aborted"]
+                    "enum": [
+                      "nominal",
+                      "partial",
+                      "misfire",
+                      "aborted"
+                    ]
                   },
                   "notes": {
                     "default": "",
@@ -996,7 +1077,10 @@
                     "maxLength": 4000
                   }
                 },
-                "required": ["fired_at", "outcome"]
+                "required": [
+                  "fired_at",
+                  "outcome"
+                ]
               }
             }
           }
@@ -1026,7 +1110,9 @@
     "/api/shotlog/search": {
       "get": {
         "summary": "Full-text search over the shots you can see",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "q",
@@ -1064,7 +1150,9 @@
     "/api/shotlog/shots/{id}/corrections": {
       "post": {
         "summary": "Correct a shot entry; the original stays in the record",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1113,7 +1201,12 @@
                   },
                   "outcome": {
                     "type": "string",
-                    "enum": ["nominal", "partial", "misfire", "aborted"]
+                    "enum": [
+                      "nominal",
+                      "partial",
+                      "misfire",
+                      "aborted"
+                    ]
                   },
                   "notes": {
                     "default": "",
@@ -1126,7 +1219,10 @@
                     "maxLength": 500
                   }
                 },
-                "required": ["outcome", "reason"]
+                "required": [
+                  "outcome",
+                  "reason"
+                ]
               }
             }
           }
@@ -1156,7 +1252,9 @@
     "/api/shotlog/targets": {
       "get": {
         "summary": "Target inventory, optionally by status",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "status",
@@ -1164,7 +1262,13 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["fabricated", "characterized", "allocated", "shot", "scrapped"]
+              "enum": [
+                "fabricated",
+                "characterized",
+                "allocated",
+                "shot",
+                "scrapped"
+              ]
             }
           }
         ],
@@ -1191,7 +1295,9 @@
       },
       "post": {
         "summary": "Register newly fabricated targets",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "description": "Needs one of the roles: Scientist. Row-level security decides the rest.",
         "requestBody": {
           "required": true,
@@ -1221,7 +1327,11 @@
                     }
                   }
                 },
-                "required": ["batch", "design", "serials"]
+                "required": [
+                  "batch",
+                  "design",
+                  "serials"
+                ]
               }
             }
           }
@@ -1251,7 +1361,9 @@
     "/api/shotlog/targets/{id}/transition": {
       "post": {
         "summary": "Move a target through its life: characterise, allocate to a campaign, release or scrap",
-        "tags": ["shotlog"],
+        "tags": [
+          "shotlog"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1274,7 +1386,11 @@
                 "properties": {
                   "to": {
                     "type": "string",
-                    "enum": ["characterized", "allocated", "scrapped"]
+                    "enum": [
+                      "characterized",
+                      "allocated",
+                      "scrapped"
+                    ]
                   },
                   "campaign_id": {
                     "type": "string",
@@ -1298,7 +1414,9 @@
                     }
                   }
                 },
-                "required": ["to"]
+                "required": [
+                  "to"
+                ]
               }
             }
           }
