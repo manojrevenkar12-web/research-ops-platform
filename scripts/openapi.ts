@@ -18,7 +18,8 @@ export async function openApiDocument() {
   const paths: Record<string, Record<string, unknown>> = {};
   for (const r of [...registry].sort(
     // Code-point order, not locale order: the document must be identical on every machine.
-    (a, b) => (a.url < b.url ? -1 : a.url > b.url ? 1 : a.method < b.method ? -1 : a.method > b.method ? 1 : 0),
+    (a, b) =>
+      a.url < b.url ? -1 : a.url > b.url ? 1 : a.method < b.method ? -1 : a.method > b.method ? 1 : 0,
   )) {
     const path = r.url.replace(/:([a-z_]+)/g, "{$1}");
     const parameters: unknown[] = [];

@@ -8,7 +8,8 @@
       "!reports",
       "!**/generated",
       "!infra/.terraform",
-      "!infra/*.auto.tfvars.json", "!docs/openapi.json",
+      "!infra/*.auto.tfvars.json",
+      "!docs/openapi.json",
       "!apps/web/test-results",
       "!apps/web/playwright-report",
       "!heldout"
